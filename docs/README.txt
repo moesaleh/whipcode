@@ -1,41 +1,33 @@
-Copyright 2024 whipcode.app (AnnikaV9)
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on
-an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific
-language governing permissions and limitations under the License.
-
-
-
 REST service for executing untrusted code with Podman.
-The below instructions were tested on Debian 12.
+
+Please set this up on a SELinux-enabled system.
+Tested on Fedora Server 41.
 
 
 Install dependencies:
     Go:
-        $ wget https://go.dev/dl/go1.<version>.linux-amd64.tar.gz
+        $ wget https://go.dev/dl/go1.<version>.linux-<arch>.tar.gz
         $ sudo rm -rf /usr/local/go
-        $ sudo tar -C /usr/local -xzf go1.<version>.linux-amd64.tar.gz
+        $ sudo tar -C /usr/local -xzf go1.<version>.linux-<arch>.tar.gz
         $ sudo echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile
         $ source /etc/profile
 
     go-task:
-        $ wget https://github.com/go-task/task/releases/latest/download/task_linux_amd64.deb
-        $ sudo dpkg -i task_linux_amd64.deb
+        $ wget https://github.com/go-task/task/releases/latest/download/task_linux_<arch>.rpm
+        $ sudo dnf install task_linux_<arch>.rpm
 
     Podman:
-        $ sudo apt install podman containers-storage uidmap
+        $ sudo dnf install podman
         $ sudo echo "$USER:100000:65536" | sudo tee /etc/subuid /etc/subgid
         $ podman system reset
 
         Ensure that `podman info | grep graphDriverName` returns `overlay`.
+
+    SELinux:
+        Ensure that `sudo getenforce` returns `Enforcing`.
+
+        $ sudo dnf install container-selinux udica
+        $ sudo semodule -i selinux/whipcode.cil
 
 
 Build:
@@ -60,7 +52,7 @@ Start the service:
     #    like Kong, Tyk and WSO2 to enforce rate limits, policies,    #
     #    and authentication. Configure your gateway to add a          #
     #    `X-Master-Key` header to every request with the secret       #
-    #    defined below.                                               #
+    #    defined below. DO NOT host the gateway on the same host.     #
     #                                                                 #
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -77,6 +69,12 @@ Start the service:
         $ task run -- --ping --port 6060
 
     The endpoint will be available at /run
+
+    Test the service:
+        $ task test
+
+        If you see 13 responses with "Success!" in the `stdout` field,
+        the service is working correctly.
 
 
 Options:
@@ -124,3 +122,19 @@ Options:
     --refill  SECONDS  (Requires --standalone)
         The number of seconds for each request to refill in the
         burst bucket. (default: 1)
+
+
+License:
+    Copyright 2024 whipcode.app (AnnikaV9)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on
+    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+    either express or implied. See the License for the specific
+    language governing permissions and limitations under the License.
