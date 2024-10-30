@@ -8,4 +8,5 @@
 *.sum            text diff=text
 *.yml            text diff=yaml
 *.md             text diff=markdown
+*.cil            text
 LICENSE          text
