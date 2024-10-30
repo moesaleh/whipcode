@@ -15,7 +15,7 @@
 #  language governing permissions and limitations under the License.
 #
 
-if command -v podman &> /dev/null
+if ! command -v podman &> /dev/null
 then
     echo "Podman is not installed."
     exit 1
