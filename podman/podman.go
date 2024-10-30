@@ -80,6 +80,7 @@ func (ex *Executor) RunCode(code, cmd, ext, img string, enableCache bool) (int, 
 		"--tmpfs", "/var/tmp:ro,size=32m,mode=1777",
 		"--security-opt", "no-new-privileges",
 		"--security-opt", "mask=/home:/etc:/opt:/media:/root:/run:/srv:/sys:/var",
+		"--security-opt", "label=type:whipcode.process",
 		"--volume", fmt.Sprintf("./run/%s:/run.%s:Z,ro", srcFileName, ext),
 		img, "sh", "-c", fmt.Sprintf("echo stdout-start && echo stderr-start >&2 && %s /run.%s", cmd, ext),
 	}

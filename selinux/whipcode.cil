@@ -1,0 +1,11 @@
+(block whipcode
+    (blockinherit container)
+    (allow process container_file_t ( dir ( getattr ioctl lock open read search )))
+    (allow process container_file_t ( file ( getattr ioctl lock open read )))
+    (allow process container_file_t ( fifo_file ( getattr open read lock ioctl )))
+    (allow process container_file_t ( sock_file ( getattr open read )))
+    (allow process user_home_t ( dir ( getattr ioctl lock open read search )))
+    (allow process user_home_t ( file ( getattr ioctl lock open read )))
+    (allow process user_home_t ( fifo_file ( getattr open read lock ioctl )))
+    (allow process user_home_t ( sock_file ( getattr open read )))
+)
