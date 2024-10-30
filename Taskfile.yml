@@ -1,0 +1,34 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - go build -o ./bin/whipcode
+
+  build-images:
+    cmds:
+      - bash scripts/images.sh
+
+  clean:
+    cmds:
+      - rm -rf bin/*
+
+  all:
+    cmds:
+      - task clean
+      - task build
+      - task build-images
+
+  key:
+    cmds:
+      - echo -n "{{.CLI_ARGS}}" | bash scripts/masterkey.sh
+
+  run:
+    cmds:
+      - ./bin/whipcode {{.CLI_ARGS}}
+
+    silent: true
+
+  test:
+    cmds:
+      - bash scripts/tests.sh
