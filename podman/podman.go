@@ -33,9 +33,9 @@ import (
 	"github.com/karlseguin/ccache/v3"
 )
 
-func NewExecutor() *Executor {
+func NewExecutor(timeout int) *Executor {
 	cache := ccache.New(ccache.Configure[map[string]interface{}]().MaxSize(100).ItemsToPrune(10))
-	return &Executor{execCache: cache}
+	return &Executor{execCache: cache, timeout: timeout}
 }
 
 func (ex *Executor) RunCode(code, cmd, ext, img string, enableCache bool) (int, map[string]interface{}) {
@@ -58,7 +58,7 @@ func (ex *Executor) RunCode(code, cmd, ext, img string, enableCache bool) (int, 
 	}
 	defer os.Remove(srcFilePath)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(ex.timeout)*time.Second)
 	defer cancel()
 
 	var stdout, stderr bytes.Buffer
@@ -67,9 +67,9 @@ func (ex *Executor) RunCode(code, cmd, ext, img string, enableCache bool) (int, 
 		"--rm",
 		"--read-only",
 		"--no-hosts",
-		"--hostname", "box" + boxID,
+		"--hostname", fmt.Sprintf("box%s", boxID),
 		"--network", "none",
-		"--timeout", "12",
+		"--timeout", fmt.Sprintf("%d", ex.timeout+2),
 		"--cap-drop", "ALL",
 		"--memory", "512m",
 		"--memory-reservation", "128m",

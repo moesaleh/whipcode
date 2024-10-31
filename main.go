@@ -34,24 +34,25 @@ const VERSION = "1.0.3"
 
 func main() {
 	var version, enableTLS, enableCache, enablePing, standalone bool
-	var port, maxBytesSize, rlBurst, rlRefill int
+	var port, maxBytesSize, rlBurst, rlRefill, timeout int
 	var keyFile, proxy string
 
 	flag.Usage = func() {
 		fmt.Printf("usage: %s [options]\n", os.Args[0])
 		fmt.Println(`options:
-    -h, --help           print this help message
-    -v, --version        print version information
-    -p, --port  PORT     port to listen on (default: 8000)
-    -m, --max   BYTES    max bytes to accept (default: 1000000)
-    -k, --key   FILE     master key file (default: .masterkey)
-    --proxy     ADDR     reverse proxy address (default: none)
-    --cache              enable execution cache
-    --tls                enable tls
-    --ping               enable /ping endpoint
-    --standalone         enable rate limiting (CHECK README)
-    --burst     COUNT    rate limit burst (default: 3)
-    --refill	SECONDS  rate limit refill time (default: 1)`)
+    -h, --help              print this help message
+    -v, --version           print version information
+    -p, --port     PORT     port to listen on (default: 8000)
+    -m, --max      BYTES    max bytes to accept (default: 1000000)
+    -t, --timeout  SECONDS  timeout for execution (default: 10)
+    -k, --key      FILE     master key file (default: .masterkey)
+    --proxy        ADDR     reverse proxy address (default: none)
+    --cache                 enable execution cache
+    --tls                   enable tls
+    --ping                  enable /ping endpoint
+    --standalone            enable rate limiting (CHECK README)
+    --burst        COUNT    rate limit burst (default: 3)
+    --refill	   SECONDS  rate limit refill time (default: 1)`)
 	}
 	flag.BoolVar(&version, "version", false, "")
 	flag.BoolVar(&version, "v", false, "")
@@ -59,6 +60,8 @@ func main() {
 	flag.IntVar(&port, "p", 8000, "")
 	flag.IntVar(&maxBytesSize, "max", 1000000, "")
 	flag.IntVar(&maxBytesSize, "m", 1000000, "")
+	flag.IntVar(&timeout, "timeout", 10, "")
+	flag.IntVar(&timeout, "t", 10, "")
 	flag.StringVar(&keyFile, "key", ".masterkey", "")
 	flag.StringVar(&keyFile, "k", ".masterkey", "")
 	flag.StringVar(&proxy, "proxy", "", "")
@@ -86,7 +89,7 @@ func main() {
 		KeyAndSalt:   keyAndSalt,
 		KeyStore:     keyStore,
 		MaxBytesSize: maxBytesSize,
-		Executor:     *podman.NewExecutor(),
+		Executor:     *podman.NewExecutor(timeout),
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {

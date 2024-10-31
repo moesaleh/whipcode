@@ -115,6 +115,11 @@ CLI options:
         The maximum size of the request body in bytes. Requests
         larger than this will be rejected. (default: 1000000)
 
+    -t, --timeout  SECONDS
+        The maximum time allowed for code execution. Should be
+        set lower than the server's write timeout, which is 20
+        seconds. (default: 10)
+
     -k, --key  FILE
         Path to the file containing the master key's argon2 hash
         and salt. (default: .masterkey)
