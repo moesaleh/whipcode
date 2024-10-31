@@ -1,6 +1,23 @@
 REST service for executing untrusted code with Podman.
 See https://whipcode.app/#docs for API documentation.
 
+
+Supported languages:
+    Python                 1
+    Javascript (Node.js)   2
+    Bash                   3
+    Perl                   4
+    Lua	                   5
+    Ruby                   6
+    C                      7
+    C++	                   8
+    Rust                   9
+    Fortran               10
+    Haskell               11
+    Java                  12
+    Go                    13
+
+
 Please set this up on a SELinux-enabled system.
 Tested on Fedora Server 41.
 
