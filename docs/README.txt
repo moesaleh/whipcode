@@ -1,4 +1,5 @@
 REST service for executing untrusted code with Podman.
+See https://whipcode.app/#docs for API documentation.
 
 Please set this up on a SELinux-enabled system.
 Tested on Fedora Server 41.
@@ -26,8 +27,8 @@ Install dependencies:
     SELinux:
         Ensure that `sudo getenforce` returns `Enforcing`.
 
-        $ sudo dnf install container-selinux udica
-        $ sudo semodule -i selinux/whipcode.cil
+        $ sudo dnf install container-selinux
+        $ sudo semodule -i selinux/{whipcode,base_container,home_container}.cil
 
 
 Build:
@@ -56,7 +57,7 @@ Start the service:
     #                                                                 #
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-    DO NOT run whipcode as root.
+    DO NOT run whipcode as root, or with SELinux disabled/permissive.
 
     Save your master key's hash to .masterkey:
         $ export HISTFILE=/dev/null
@@ -68,7 +69,7 @@ Start the service:
     Port 6060 with /ping enabled:
         $ task run -- --ping --port 6060
 
-    The endpoint will be available at /run
+    The endpoint will be available at /run.
 
     Test the service:
         $ task test
