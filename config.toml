@@ -1,0 +1,62 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                     SERVER OPTIONS                      #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# The port to listen on. May not always work with authbind
+# when attempting to bind to ports < 1024.
+port = 8000
+
+# The maximum size of the request body in bytes. Requests
+# larger than this will be rejected.
+max = 1000000
+
+# The address of the reverse proxy or API gateway in front
+# of whipcode. Requests not originating from this address
+# will be rejected.
+proxy = ""
+
+# Enables TLS. Requires tls/cert.pem and tls/key.pem to be
+# present.
+tls = false
+
+# Enables the /ping endpoint. Replies with "pong".
+ping = false
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                    EXECUTION OPTIONS                    #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# The maximum time allowed for code execution. Should be
+# set lower than the server's write timeout, which is 20
+# seconds.
+timeout = 10
+
+# Path to the file containing the master key's argon2 hash
+# and salt.
+key = ".masterkey"
+
+# Enables an LRU cache for code executions. This will speed
+# up responses for repeated requests. (default: false)
+#
+# Note: The cache is not persistent and will be lost on
+# restart. While this feature is intended to reduce server
+# load and latency, in some situations it may end up
+# worsening it. Memory usage will also increase.
+cache = false
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                     STANDALONE MODE                     #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Enables per IP rate limiting, without the need for a
+# reverse proxy or API gateway. This is NOT RECOMMENDED in
+# production.
+standalone = false
+
+# The number of requests allowed in a burst.
+burst = 3
+
+# The number of seconds for each request to refill in the
+# burst bucket.
+refill = 1

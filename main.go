@@ -24,18 +24,21 @@ import (
 	"os"
 	"path/filepath"
 
+	"whipcode/config"
 	"whipcode/control"
 	"whipcode/podman"
 	"whipcode/routes"
 	"whipcode/server"
 )
 
-const VERSION = "1.0.3"
+const VERSION = "1.1.0"
 
 func main() {
 	var version, enableTLS, enableCache, enablePing, standalone bool
 	var port, maxBytesSize, rlBurst, rlRefill, timeout int
 	var keyFile, proxy string
+
+	fileConfig := config.LoadConfig("config.toml")
 
 	flag.Usage = func() {
 		fmt.Printf("usage: %s [options]\n", os.Args[0])
@@ -56,21 +59,21 @@ func main() {
 	}
 	flag.BoolVar(&version, "version", false, "")
 	flag.BoolVar(&version, "v", false, "")
-	flag.IntVar(&port, "port", 8000, "")
-	flag.IntVar(&port, "p", 8000, "")
-	flag.IntVar(&maxBytesSize, "max", 1000000, "")
-	flag.IntVar(&maxBytesSize, "m", 1000000, "")
-	flag.IntVar(&timeout, "timeout", 10, "")
-	flag.IntVar(&timeout, "t", 10, "")
-	flag.StringVar(&keyFile, "key", ".masterkey", "")
-	flag.StringVar(&keyFile, "k", ".masterkey", "")
-	flag.StringVar(&proxy, "proxy", "", "")
-	flag.BoolVar(&enableCache, "cache", false, "")
-	flag.BoolVar(&enableTLS, "tls", false, "")
-	flag.BoolVar(&enablePing, "ping", false, "")
-	flag.BoolVar(&standalone, "standalone", false, "")
-	flag.IntVar(&rlBurst, "burst", 3, "")
-	flag.IntVar(&rlRefill, "refill", 1, "")
+	flag.IntVar(&port, "port", fileConfig.Port, "")
+	flag.IntVar(&port, "p", fileConfig.Port, "")
+	flag.IntVar(&maxBytesSize, "max", fileConfig.Max, "")
+	flag.IntVar(&maxBytesSize, "m", fileConfig.Max, "")
+	flag.IntVar(&timeout, "timeout", fileConfig.Timeout, "")
+	flag.IntVar(&timeout, "t", fileConfig.Timeout, "")
+	flag.StringVar(&keyFile, "key", fileConfig.Key, "")
+	flag.StringVar(&keyFile, "k", fileConfig.Key, "")
+	flag.StringVar(&proxy, "proxy", fileConfig.Proxy, "")
+	flag.BoolVar(&enableCache, "cache", fileConfig.Cache, "")
+	flag.BoolVar(&enableTLS, "tls", fileConfig.TLS, "")
+	flag.BoolVar(&enablePing, "ping", fileConfig.Ping, "")
+	flag.BoolVar(&standalone, "standalone", fileConfig.Standalone, "")
+	flag.IntVar(&rlBurst, "burst", fileConfig.Burst, "")
+	flag.IntVar(&rlRefill, "refill", fileConfig.Refill, "")
 	flag.Parse()
 
 	if version {
