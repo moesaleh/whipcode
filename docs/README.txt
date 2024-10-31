@@ -1,4 +1,9 @@
 REST service for executing untrusted code with Podman.
+
+Implemented as a scalable stateless microservice with
+no user management or authentication, minimizing damage
+from potential zero-day breakouts.
+
 See https://whipcode.app/#docs for API documentation.
 
 
@@ -25,7 +30,7 @@ Please set this up on a SELinux-enabled system.
 Tested on Fedora Server 41.
 
 
-Install dependencies:
+Environment setup:
     Go:
         $ wget https://go.dev/dl/go1.<version>.linux-<arch>.tar.gz
         $ sudo rm -rf /usr/local/go
@@ -76,7 +81,7 @@ Start the service:
     #    like Kong, Tyk and WSO2 to enforce rate limits, policies,    #
     #    and authentication. Configure your gateway to add a          #
     #    `X-Master-Key` header to every request with the secret       #
-    #    defined below. DO NOT host the gateway on the same host.     #
+    #    defined below. DO NOT host the gateway on the same system.   #
     #                                                                 #
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -97,11 +102,11 @@ Start the service:
     Test the service:
         $ task test
 
-        If you see 15 responses with "Success!" in the `stdout` field,
+        If you see 16 responses with "Success!" in the `stdout` field,
         the service is working correctly.
 
 
-Options:
+CLI options:
     -p, --port  PORT
         The port to listen on. May not always work with authbind
         when attempting to bind to ports < 1024. (default: 8000)
