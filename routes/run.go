@@ -46,19 +46,22 @@ func (l *LanguageID) UnmarshalJSON(b []byte) error {
 
 func getLanguageConfig() map[string]map[string]string {
 	return map[string]map[string]string{
-		"1":  {"cmd": "python3", "ext": "py", "image": "whipcode-python"},
-		"2":  {"cmd": "node", "ext": "js", "image": "whipcode-nodejs"},
-		"3":  {"cmd": "bash", "ext": "sh", "image": "whipcode-bash"},
-		"4":  {"cmd": "perl", "ext": "pl", "image": "whipcode-perl"},
-		"5":  {"cmd": "lua", "ext": "lua", "image": "whipcode-lua"},
-		"6":  {"cmd": "ruby", "ext": "rb", "image": "whipcode-ruby"},
-		"7":  {"cmd": "c-run", "ext": "c", "image": "whipcode-c"},
-		"8":  {"cmd": "cpp-run", "ext": "cpp", "image": "whipcode-cpp"},
-		"9":  {"cmd": "rs-run", "ext": "rs", "image": "whipcode-rust"},
-		"10": {"cmd": "f90-run", "ext": "f90", "image": "whipcode-fortran"},
-		"11": {"cmd": "hs-run", "ext": "hs", "image": "whipcode-haskell"},
-		"12": {"cmd": "java", "ext": "java", "image": "whipcode-java"},
-		"13": {"cmd": "go-run", "ext": "go", "image": "whipcode-go"},
+		"1":  {"cmd": "/usr/bin/python3", "ext": "py", "image": "whipcode-python"},
+		"2":  {"cmd": "/usr/bin/node", "ext": "js", "image": "whipcode-nodejs"},
+		"3":  {"cmd": "/bin/bash", "ext": "sh", "image": "whipcode-bash"},
+		"4":  {"cmd": "/usr/bin/perl", "ext": "pl", "image": "whipcode-perl"},
+		"5":  {"cmd": "/usr/bin/lua", "ext": "lua", "image": "whipcode-lua"},
+		"6":  {"cmd": "/usr/bin/ruby", "ext": "rb", "image": "whipcode-ruby"},
+		"7":  {"cmd": "sh /usr/bin/c-run", "ext": "c", "image": "whipcode-c"},
+		"8":  {"cmd": "sh /usr/bin/cpp-run", "ext": "cpp", "image": "whipcode-cpp"},
+		"9":  {"cmd": "sh /usr/bin/rs-run", "ext": "rs", "image": "whipcode-rust"},
+		"10": {"cmd": "sh /usr/bin/f90-run", "ext": "f90", "image": "whipcode-fortran"},
+		"11": {"cmd": "sh /usr/bin/hs-run", "ext": "hs", "image": "whipcode-haskell"},
+		"12": {"cmd": "/usr/bin/java", "ext": "java", "image": "whipcode-java"},
+		"13": {"cmd": "sh /usr/bin/go-run", "ext": "go", "image": "whipcode-go"},
+		"14": {"cmd": "sh /usr/bin/ts-run", "ext": "ts", "image": "whipcode-typescript"},
+		"15": {"cmd": "/usr/bin/sbcl --script", "ext": "lisp", "image": "whipcode-lisp"},
+		"16": {"cmd": "/usr/bin/racket", "ext": "rkt", "image": "whipcode-racket"},
 	}
 }
 

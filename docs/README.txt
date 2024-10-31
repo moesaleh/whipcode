@@ -10,12 +10,15 @@ Supported languages:
     Lua	                   5
     Ruby                   6
     C                      7
-    C++	                   8
+    C++                    8
     Rust                   9
     Fortran               10
     Haskell               11
     Java                  12
     Go                    13
+    TypeScript            14
+    Common Lisp           15
+    Racket                16
 
 
 Please set this up on a SELinux-enabled system.
@@ -58,6 +61,9 @@ Build:
     Or just the container images:
         $ task build-images
 
+    To rebuild images at a later time:
+        $ task rebuild-images
+
 
 Start the service:
 
@@ -91,7 +97,7 @@ Start the service:
     Test the service:
         $ task test
 
-        If you see 13 responses with "Success!" in the `stdout` field,
+        If you see 15 responses with "Success!" in the `stdout` field,
         the service is working correctly.
 
 

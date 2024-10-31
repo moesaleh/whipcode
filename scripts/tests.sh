@@ -32,6 +32,9 @@ declare -A langs=(
     [11]='main = putStrLn "Success!"'
     [12]='public class HelloWorld { public static void main(String[] args) { System.out.println("Success!"); } }'
     [13]='package main; import "fmt"; func main() { fmt.Println("Success!") }'
+    [14]='let message: string = "Success!";console.log(message);'
+    [15]='(write-line "Success!")'
+    [16]='#lang racket\n"Success!"'
 )
 
 for i in "${!langs[@]}"; do
