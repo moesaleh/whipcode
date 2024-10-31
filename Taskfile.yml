@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 tasks:
   build:
@@ -8,6 +8,11 @@ tasks:
   build-images:
     cmds:
       - bash scripts/images.sh
+
+  rebuild-images:
+    cmds:
+      - podman rmi --force $(podman images -q "whipcode-*" | uniq)
+      - task build-images
 
   clean:
     cmds:
