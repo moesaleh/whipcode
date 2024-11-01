@@ -63,6 +63,7 @@ func getLanguageConfig() map[string]map[string]string {
 		"15": {"entry": "lisp", "ext": "lisp", "image": "whipcode-lisp"},
 		"16": {"entry": "racket", "ext": "rkt", "image": "whipcode-racket"},
 		"17": {"entry": "crystal", "ext": "cr", "image": "whipcode-crystal"},
+		"18": {"entry": "clojure", "ext": "clj", "image": "whipcode-clojure"},
 	}
 }
 

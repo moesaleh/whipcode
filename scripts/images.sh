@@ -46,6 +46,7 @@ declare -A langs=(
     [lisp]='sbcl'
     [racket]='racket'
     [crystal]='crystal'
+    [clojure]='clojure'
 )
 
 HEADER="FROM docker.io/alpine:latest"

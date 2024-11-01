@@ -25,6 +25,7 @@ Supported languages:
     Common Lisp           15
     Racket                16
     Crystal               17
+    Clojure               18
 
 
 Please set this up on a SELinux-enabled system.

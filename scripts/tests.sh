@@ -36,6 +36,8 @@ declare -A langs=(
     [15]='(write-line "Success!")'
     [16]='#lang racket\n"Success!"'
     [17]='puts "Success!"'
+    [18]='(println "Success!")'
+
 )
 
 for i in "${!langs[@]}"; do
