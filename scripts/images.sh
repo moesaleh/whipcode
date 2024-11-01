@@ -21,32 +21,51 @@ then
     exit 1
 fi
 
+if [ ! -d scripts/extra_setup ]; then
+    echo "Run this script from the root of the repository."
+    exit 1
+fi
+
 declare -A langs=(
-    [BASH]='bash'
-    [NODEJS]='nodejs'
-    [C]='gcc'
-    [CPP]='g++'
-    [FORTRAN]='gfortran'
-    [GO]='gcc-go'
-    [HASKELL]='ghc'
-    [JAVA]='openjdk21'
-    [LUA]='lua && ln -s /usr/bin/lua5* /usr/bin/lua'
-    [PERL]='perl'
-    [PYTHON]='python3'
-    [RUBY]='ruby'
-    [RUST]='rust'
-    [TYPESCRIPT]='npm && npm i -g @swc/cli @swc/core'
-    [LISP]='sbcl'
-    [RACKET]='racket'
+    # [<lang>]='<apk_deps>'
+    # Extra setup should be done in scripts/extra_setup/<lang>.sh
+    [bash]='bash'
+    [nodejs]='nodejs'
+    [c]='gcc'
+    [cpp]='g++'
+    [fortran]='gfortran'
+    [go]='gcc-go'
+    [haskell]='ghc'
+    [java]='openjdk21'
+    [lue]='lua'
+    [perl]='perl'
+    [python]='python3'
+    [ruby]='ruby'
+    [rust]='rust'
+    [typescript]='npm'
+    [list]='sbcl'
+    [racket]='racket'
 )
 
-prefix="FROM docker.io/alpine:latest\nRUN apk update --no-cache && apk upgrade --no-cache && apk add --no-cache libc-dev musl-dev "
-suffix="&& apk --purge del apk-tools && rm -rf /var/cache/apk /var/lib/apk /lib/apk /etc/apk /sbin/apk /usr/share/apk /usr/lib/apk /usr/sbin/apk /usr/local/apk /usr/bin/apk /usr/local/bin/apk /usr/local/sbin/apk /usr/local/lib/apk /usr/local/share/apk /usr/local/libexec/apk /usr/local/etc/apk"
+HEADER="FROM docker.io/alpine:latest"
+PREFIX="RUN apk update --no-cache && apk upgrade --no-cache && apk add --no-cache libc-dev musl-dev "
+SUFFIX="apk --purge del apk-tools && rm -rf /var/cache/apk /var/lib/apk /lib/apk /etc/apk /sbin/apk /usr/share/apk /usr/lib/apk /usr/sbin/apk /usr/local/apk /usr/bin/apk /usr/local/bin/apk /usr/local/sbin/apk /usr/local/lib/apk /usr/local/share/apk /usr/local/libexec/apk /usr/local/etc/apk"
 
-trap "exit" INT
+trap "rm -f TEMP_CONTAINERFILE; exit" INT
+
 declare -i i=0
 for lang in "${!langs[@]}"; do
     i+=1
-    langs["$lang"]=$(echo -e "${prefix}${langs[$lang]} ${suffix}")
-    podman build -t whipcode-${lang,,} - <<< "${langs[$lang]}" | while read line; do echo "[$i/16] [$lang] $line"; done
+    header=${HEADER}
+    suffix=${SUFFIX}
+    prefix=${PREFIX}
+    if [ -f scripts/extra_setup/${lang,,}.sh ]; then
+        header+="\nCOPY scripts/extra_setup/${lang,,}.sh /tmp/setup.sh\n"
+        suffix="sh /tmp/setup.sh && rm -f /tmp/setup.sh && ${suffix}"
+    fi
+    langs["$lang"]=$(echo -e "${header}\n${prefix}${langs[$lang]} && ${suffix}")
+    echo "${langs[$lang]}" > TEMP_CONTAINERFILE
+    podman build -t whipcode-${lang,,} -f TEMP_CONTAINERFILE . | while read line; do echo "[$i/16] [${lang,,}] $line"; done
 done
+
+rm -f TEMP_CONTAINERFILE

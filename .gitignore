@@ -4,3 +4,4 @@ tls/
 run/
 .masterkey
 config.toml
+TEMP_CONTAINERFILE
