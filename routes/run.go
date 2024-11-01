@@ -97,7 +97,7 @@ func Run(w http.ResponseWriter, r *http.Request) {
 
 	langConfig, exists := getLanguageConfig()[user.LanguageID.value]
 	if !exists {
-		server.Send(w, http.StatusBadRequest, []byte(`{"detail": "invalid value for parameter language_id, must be a value from 1 to 16"}`))
+		server.Send(w, http.StatusBadRequest, []byte(`{"detail": "invalid value for parameter language_id, refer to the documentation"}`))
 		return
 	}
 
