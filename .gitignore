@@ -3,3 +3,4 @@ bin/
 tls/
 run/
 .masterkey
+config.toml
