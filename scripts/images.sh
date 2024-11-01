@@ -45,6 +45,7 @@ declare -A langs=(
     [typescript]='npm'
     [lisp]='sbcl'
     [racket]='racket'
+    [crystal]='crystal'
 )
 
 HEADER="FROM docker.io/alpine:latest"

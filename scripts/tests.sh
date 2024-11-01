@@ -35,6 +35,7 @@ declare -A langs=(
     [14]='let message: string = "Success!";console.log(message);'
     [15]='(write-line "Success!")'
     [16]='#lang racket\n"Success!"'
+    [17]='puts "Success!"'
 )
 
 for i in "${!langs[@]}"; do
