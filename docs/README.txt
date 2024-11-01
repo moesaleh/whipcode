@@ -27,6 +27,7 @@ Supported languages:
     Crystal               17
     Clojure               18
     x86 Assembly          19
+    Zig                   20
 
 
 Please set this up on a SELinux-enabled system.
