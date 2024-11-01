@@ -1,1 +1,2 @@
-g++ /source.cpp -o /tmp/run && ./tmp/run
+g++ /source.cpp -o /tmp/run &&
+./tmp/run

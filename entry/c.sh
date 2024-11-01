@@ -1,1 +1,2 @@
-gcc /source.c -o /tmp/run && ./tmp/run
+gcc /source.c -o /tmp/run &&
+./tmp/run

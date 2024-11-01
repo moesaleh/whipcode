@@ -1,1 +1,2 @@
-rustc /source.rs -o /tmp/run && ./tmp/run
+rustc /source.rs -o /tmp/run &&
+./tmp/run
