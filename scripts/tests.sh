@@ -37,7 +37,7 @@ declare -A langs=(
     [16]='#lang racket\n"Success!"'
     [17]='puts "Success!"'
     [18]='(println "Success!")'
-
+    [19]='section        .text         \nglobal         _start          \n_start:\n    mov edx, len \n    mov ecx, msg \n    mov ebx, 1\n    mov eax, 4\n    int 0x80\n    mov eax, 1\n    int 0x80\nsection        .data             \n    msg        db "Success!", 0xa\n    len        equ $ -msg\n'
 )
 
 for i in "${!langs[@]}"; do

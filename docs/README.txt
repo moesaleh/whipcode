@@ -9,7 +9,7 @@ See https://whipcode.app/#docs for API documentation.
 
 Supported languages:
     Python                 1
-    Javascript (Node.js)   2
+    JavaScript             2
     Bash                   3
     Perl                   4
     Lua	                   5
@@ -26,6 +26,7 @@ Supported languages:
     Racket                16
     Crystal               17
     Clojure               18
+    x86 Assembly          19
 
 
 Please set this up on a SELinux-enabled system.

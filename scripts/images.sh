@@ -47,6 +47,7 @@ declare -A langs=(
     [racket]='racket'
     [crystal]='crystal'
     [clojure]='clojure'
+    [nasm]='nasm binutils'
 )
 
 HEADER="FROM docker.io/alpine:latest"
