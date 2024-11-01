@@ -53,7 +53,7 @@ Environment setup:
         Ensure that `sudo getenforce` returns `Enforcing`.
 
         $ sudo dnf install container-selinux
-        $ sudo semodule -i selinux/{whipcode,base_container,home_container}.cil
+        $ sudo semodule -i selinux/*.cil
 
 
 Build:
@@ -68,6 +68,9 @@ Build:
 
     To rebuild images at a later time:
         $ task rebuild-images
+
+    Update (git pull), build service and images:
+        $ task update
 
 
 Start the service:

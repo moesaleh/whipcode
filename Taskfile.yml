@@ -1,6 +1,11 @@
 version: "3"
 
 tasks:
+  update:
+    cmds:
+      - git pull
+      - task all
+
   build:
     cmds:
       - go build -o ./bin/whipcode
