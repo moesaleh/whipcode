@@ -24,18 +24,18 @@ fi
 declare -A langs=(
     [BASH]='bash'
     [NODEJS]='nodejs'
-    [C]='bash gcc && echo "#!/bin/bash" > /usr/bin/c-run && echo "gcc \$1 -o /tmp/run && ./tmp/run" >> /usr/bin/c-run && chmod +x /usr/bin/c-run'
-    [CPP]='bash g++ && echo "#!/bin/bash" > /usr/bin/cpp-run && echo "g++ \$1 -o /tmp/run && ./tmp/run" >> /usr/bin/cpp-run && chmod +x /usr/bin/cpp-run'
-    [FORTRAN]='bash gfortran && echo "#!/bin/bash" > /usr/bin/f90-run && echo "gfortran \$1 -o /tmp/run && ./tmp/run" >> /usr/bin/f90-run && chmod +x /usr/bin/f90-run'
-    [GO]='bash gcc-go && echo "#!/bin/bash" > /usr/bin/go-run && echo "gccgo \$1 -o /tmp/run && ./tmp/run" >> /usr/bin/go-run && chmod +x /usr/bin/go-run'
-    [HASKELL]="bash ghc && echo '#!/bin/bash' > /usr/bin/hs-run && echo 'runghc --ghc-arg=\"-v0\" \$1' >> /usr/bin/hs-run && chmod +x /usr/bin/hs-run"
+    [C]='bash gcc'
+    [CPP]='bash g++'
+    [FORTRAN]='bash gfortran'
+    [GO]='bash gcc-go'
+    [HASKELL]="bash ghc"
     [JAVA]='openjdk21'
     [LUA]='lua && ln -s /usr/bin/lua5* /usr/bin/lua'
     [PERL]='perl'
     [PYTHON]='python3'
     [RUBY]='ruby'
-    [RUST]='bash rust && echo "#!/bin/bash" > /usr/bin/rs-run && echo "rustc \$1 -o /tmp/run && ./tmp/run" >> /usr/bin/rs-run && chmod +x /usr/bin/rs-run'
-    [TYPESCRIPT]='npm && npm i -g @swc/cli @swc/core && echo "#!/bin/bash" > /usr/bin/ts-run && echo "swc -q \$1 -o /tmp/run.js && node /tmp/run.js" >> /usr/bin/ts-run && chmod +x /usr/bin/ts-run'
+    [RUST]='bash rust'
+    [TYPESCRIPT]='npm && npm i -g @swc/cli @swc/core'
     [LISP]='sbcl'
     [RACKET]='racket'
 )

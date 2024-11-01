@@ -46,22 +46,22 @@ func (l *LanguageID) UnmarshalJSON(b []byte) error {
 
 func getLanguageConfig() map[string]map[string]string {
 	return map[string]map[string]string{
-		"1":  {"cmd": "/usr/bin/python3", "ext": "py", "image": "whipcode-python"},
-		"2":  {"cmd": "/usr/bin/node", "ext": "js", "image": "whipcode-nodejs"},
-		"3":  {"cmd": "/bin/bash", "ext": "sh", "image": "whipcode-bash"},
-		"4":  {"cmd": "/usr/bin/perl", "ext": "pl", "image": "whipcode-perl"},
-		"5":  {"cmd": "/usr/bin/lua", "ext": "lua", "image": "whipcode-lua"},
-		"6":  {"cmd": "/usr/bin/ruby", "ext": "rb", "image": "whipcode-ruby"},
-		"7":  {"cmd": "sh /usr/bin/c-run", "ext": "c", "image": "whipcode-c"},
-		"8":  {"cmd": "sh /usr/bin/cpp-run", "ext": "cpp", "image": "whipcode-cpp"},
-		"9":  {"cmd": "sh /usr/bin/rs-run", "ext": "rs", "image": "whipcode-rust"},
-		"10": {"cmd": "sh /usr/bin/f90-run", "ext": "f90", "image": "whipcode-fortran"},
-		"11": {"cmd": "sh /usr/bin/hs-run", "ext": "hs", "image": "whipcode-haskell"},
-		"12": {"cmd": "/usr/bin/java", "ext": "java", "image": "whipcode-java"},
-		"13": {"cmd": "sh /usr/bin/go-run", "ext": "go", "image": "whipcode-go"},
-		"14": {"cmd": "sh /usr/bin/ts-run", "ext": "ts", "image": "whipcode-typescript"},
-		"15": {"cmd": "/usr/bin/sbcl --script", "ext": "lisp", "image": "whipcode-lisp"},
-		"16": {"cmd": "/usr/bin/racket", "ext": "rkt", "image": "whipcode-racket"},
+		"1":  {"entry": "python", "ext": "py", "image": "whipcode-python"},
+		"2":  {"entry": "nodejs", "ext": "js", "image": "whipcode-nodejs"},
+		"3":  {"entry": "bash", "ext": "sh", "image": "whipcode-bash"},
+		"4":  {"entry": "perl", "ext": "pl", "image": "whipcode-perl"},
+		"5":  {"entry": "lua", "ext": "lua", "image": "whipcode-lua"},
+		"6":  {"entry": "ruby", "ext": "rb", "image": "whipcode-ruby"},
+		"7":  {"entry": "c", "ext": "c", "image": "whipcode-c"},
+		"8":  {"entry": "cpp", "ext": "cpp", "image": "whipcode-cpp"},
+		"9":  {"entry": "rust", "ext": "rs", "image": "whipcode-rust"},
+		"10": {"entry": "fortran", "ext": "f90", "image": "whipcode-fortran"},
+		"11": {"entry": "haskell", "ext": "hs", "image": "whipcode-haskell"},
+		"12": {"entry": "java", "ext": "java", "image": "whipcode-java"},
+		"13": {"entry": "go", "ext": "go", "image": "whipcode-go"},
+		"14": {"entry": "typescript", "ext": "ts", "image": "whipcode-typescript"},
+		"15": {"entry": "lisp", "ext": "lisp", "image": "whipcode-lisp"},
+		"16": {"entry": "racket", "ext": "rkt", "image": "whipcode-racket"},
 	}
 }
 
@@ -103,12 +103,12 @@ func Run(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cmd := langConfig["cmd"]
+	entry := langConfig["entry"]
 	ext := langConfig["ext"]
 	img := langConfig["image"]
 
 	ex, _ := r.Context().Value(server.ExecutorContextKey).(podman.Executor)
-	status, result := ex.RunCode(string(codeBytes), cmd, ext, img, r.Context().Value(server.EnableCacheContextKey).(bool))
+	status, result := ex.RunCode(string(codeBytes), entry, ext, img, r.Context().Value(server.EnableCacheContextKey).(bool))
 	resultBytes, _ := json.Marshal(result)
 
 	server.Send(w, status, resultBytes)

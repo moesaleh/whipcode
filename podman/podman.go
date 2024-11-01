@@ -38,7 +38,7 @@ func NewExecutor(timeout int) *Executor {
 	return &Executor{execCache: cache, timeout: timeout}
 }
 
-func (ex *Executor) RunCode(code, cmd, ext, img string, enableCache bool) (int, map[string]interface{}) {
+func (ex *Executor) RunCode(code, entry, ext, img string, enableCache bool) (int, map[string]interface{}) {
 	if enableCache {
 		if item := ex.execCache.Get(code); item != nil {
 			go item.Extend(time.Hour * 24)
@@ -81,8 +81,9 @@ func (ex *Executor) RunCode(code, cmd, ext, img string, enableCache bool) (int, 
 		"--security-opt", "no-new-privileges",
 		"--security-opt", "mask=/home:/etc:/opt:/media:/root:/run:/srv:/sys:/var",
 		"--security-opt", "label=type:whipcode.process",
-		"--volume", fmt.Sprintf("./run/%s:/run.%s:Z,ro", srcFileName, ext),
-		img, "sh", "-c", fmt.Sprintf("echo stdout-start && echo stderr-start >&2 && %s /run.%s", cmd, ext),
+		"--volume", fmt.Sprintf("./entry/%s.sh:/entry.sh:Z,ro", entry),
+		"--volume", fmt.Sprintf("./run/%s:/source.%s:Z,ro", srcFileName, ext),
+		img, "sh", "-c", "echo stdout-start && echo stderr-start >&2 && sh ./entry.sh",
 	}
 	cmdExec := exec.CommandContext(ctx, "/usr/bin/podman", args...)
 	cmdExec.Stdout = &stdout
