@@ -107,3 +107,8 @@ image = "whipcode-nim"
 entry = "d"
 ext = "d"
 image = "whipcode-d"
+
+[23]
+entry = "csharp"
+ext = "cs"
+image = "whipcode-csharp"

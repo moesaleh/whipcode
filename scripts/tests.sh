@@ -41,6 +41,7 @@ declare -A langs=(
     [20]='const std = @import("std");pub fn main() !void { std.io.getStdOut().writeAll("Success!") catch unreachable; }'
     [21]='echo "Success!"'
     [22]='import std.stdio; void main() { writeln("Success!"); }'
+    [23]='System.Console.WriteLine("Success!");'
 )
 
 for i in "${!langs[@]}"; do
