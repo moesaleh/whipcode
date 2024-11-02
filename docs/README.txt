@@ -31,6 +31,7 @@ Supported languages:
     Nim                   21
     D                     22     GDC
     C#                    23     Mono
+    Rscript               24
 
     To add interpreters/compilers, see:
         - scripts/images.sh

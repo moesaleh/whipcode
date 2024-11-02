@@ -79,7 +79,7 @@ func (ex *Executor) RunCode(code, entry, ext, img string, enableCache bool) (int
 		"--tmpfs", "/tmp:rw,size=64m,mode=1777",
 		"--tmpfs", "/var/tmp:ro,size=32m,mode=1777",
 		"--security-opt", "no-new-privileges",
-		"--security-opt", "mask=/home:/etc:/opt:/media:/root:/run:/srv:/sys:/var",
+		"--security-opt", "mask=/home:/opt:/media:/root:/run:/srv:/sys:/var",
 		"--security-opt", "label=type:whipcode.process",
 		"--volume", fmt.Sprintf("./entry/%s.sh:/entry.sh:z,ro", entry),
 		"--volume", fmt.Sprintf("./run/%s:/source.%s:Z,ro", srcFileName, ext),

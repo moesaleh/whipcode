@@ -42,6 +42,7 @@ declare -A langs=(
     [21]='echo "Success!"'
     [22]='import std.stdio; void main() { writeln("Success!"); }'
     [23]='System.Console.WriteLine("Success!");'
+    [24]='print("Success!")'
 )
 
 for i in "${!langs[@]}"; do

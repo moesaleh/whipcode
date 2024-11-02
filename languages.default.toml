@@ -112,3 +112,8 @@ image = "whipcode-d"
 entry = "csharp"
 ext = "cs"
 image = "whipcode-csharp"
+
+[24]
+entry = "rscript"
+ext = "r"
+image = "whipcode-rscript"
