@@ -21,7 +21,8 @@ import (
 	"net/http"
 )
 
-func Send(w http.ResponseWriter, status int, message []byte) {
+func Send(w http.ResponseWriter, status int, message []byte, contentType string) {
+	w.Header().Set("Content-Type", contentType)
 	w.WriteHeader(status)
 	if _, err := w.Write(message); err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)

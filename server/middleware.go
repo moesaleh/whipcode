@@ -49,14 +49,17 @@ func MiddleWare(handler http.Handler, params MiddleWareParams) http.Handler {
 		host, _, _ := net.SplitHostPort(r.RemoteAddr)
 
 		if params.Standalone && !params.RateLimiter.CheckClient(host, params.RlBurst, params.RlRefill) {
-			log.Printf("%s %s %s [ratelimited]", host, r.Method, r.URL)
+			log.Printf("%s %s %s [blocked: rate]", host, r.Method, r.URL)
+			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusTooManyRequests)
+			w.Write([]byte(`{"detail": "you are sending too many requests"}`))
 			return
 		}
 
 		log.Printf("%s %s %s", host, r.Method, r.URL)
 
 		if params.Proxy != "" && host != params.Proxy {
+			log.Printf("%s %s %s [blocked: proxy]", host, r.Method, r.URL)
 			w.WriteHeader(http.StatusForbidden)
 			return
 		}

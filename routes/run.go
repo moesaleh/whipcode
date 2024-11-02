@@ -72,39 +72,40 @@ func getLanguageConfig() map[string]map[string]string {
 
 func Run(w http.ResponseWriter, r *http.Request) {
 	masterKey := r.Header.Get("X-Master-Key")
+
 	if masterKey == "" {
-		server.Send(w, http.StatusUnauthorized, []byte(`{"detail": "unauthorized"}`))
+		server.Send(w, http.StatusUnauthorized, []byte(`{"detail": "unauthorized"}`), "application/json")
 		return
 	}
 
 	ks, _ := r.Context().Value(server.KeyStoreContextKey).(*control.KeyStore)
 	if !ks.CheckKey(masterKey, r.Context().Value(server.MasterKeyContextKey).([]string)) {
-		server.Send(w, http.StatusUnauthorized, []byte(`{"detail": "unauthorized"}`))
+		server.Send(w, http.StatusUnauthorized, []byte(`{"detail": "unauthorized"}`), "application/json")
 		return
 	}
 
 	mimeType := r.Header.Get("Content-Type")
 	if strings.Split(mimeType, ";")[0] != "application/json" {
-		server.Send(w, http.StatusUnsupportedMediaType, []byte(`{"detail": "unsupported media type"}`))
+		server.Send(w, http.StatusUnsupportedMediaType, []byte(`{"detail": "unsupported media type"}`), "application/json")
 		return
 	}
 
 	var user User
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		server.Send(w, http.StatusBadRequest, []byte(`{"detail": "invalid request format"}`))
+		server.Send(w, http.StatusBadRequest, []byte(`{"detail": "invalid request format"}`), "application/json")
 		return
 	}
 
 	langConfig, exists := getLanguageConfig()[user.LanguageID.value]
 	if !exists {
-		server.Send(w, http.StatusBadRequest, []byte(`{"detail": "invalid value for parameter language_id, refer to the documentation"}`))
+		server.Send(w, http.StatusBadRequest, []byte(`{"detail": "invalid value for parameter language_id, refer to the documentation"}`), "application/json")
 		return
 	}
 
 	codeBytes, err := base64.StdEncoding.DecodeString(user.Code)
 	if err != nil || user.Code == "" {
-		server.Send(w, http.StatusBadRequest, []byte(`{"detail": "invalid value for parameter code, must be a base64 encoded string"}`))
+		server.Send(w, http.StatusBadRequest, []byte(`{"detail": "invalid value for parameter code, must be a base64 encoded string"}`), "application/json")
 		return
 	}
 
@@ -116,5 +117,5 @@ func Run(w http.ResponseWriter, r *http.Request) {
 	status, result := ex.RunCode(string(codeBytes), entry, ext, img, r.Context().Value(server.EnableCacheContextKey).(bool))
 	resultBytes, _ := json.Marshal(result)
 
-	server.Send(w, status, resultBytes)
+	server.Send(w, status, resultBytes, "application/json")
 }

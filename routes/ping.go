@@ -23,5 +23,5 @@ import (
 )
 
 func Ping(w http.ResponseWriter, _ *http.Request) {
-	server.Send(w, http.StatusOK, []byte("pong"))
+	server.Send(w, http.StatusOK, []byte("pong"), "text/plain")
 }
