@@ -49,6 +49,7 @@ declare -A langs=(
     [clojure]='clojure'
     [nasm]='nasm binutils'
     [zig]='zig'
+    [nim]='nim gcc'
 )
 
 HEADER="FROM docker.io/alpine:latest"
