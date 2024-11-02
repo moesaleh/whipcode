@@ -117,3 +117,8 @@ image = "whipcode-csharp"
 entry = "rscript"
 ext = "r"
 image = "whipcode-rscript"
+
+[25]
+entry = "dart"
+ext = "dart"
+image = "whipcode-dart"

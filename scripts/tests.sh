@@ -43,6 +43,7 @@ declare -A langs=(
     [22]='import std.stdio; void main() { writeln("Success!"); }'
     [23]='System.Console.WriteLine("Success!");'
     [24]='print("Success!")'
+    [25]='void main() { print("Success!"); }'
 )
 
 for i in "${!langs[@]}"; do
