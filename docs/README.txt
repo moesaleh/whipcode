@@ -35,7 +35,7 @@ Supported languages:
         - scripts/images.sh
         - scripts/extra_setup/
         - entry/
-        - routes/run.go
+        - languages.toml
         - scripts/tests.sh
 
 

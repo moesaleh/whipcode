@@ -88,6 +88,7 @@ func main() {
 	keyStore, keyAndSalt := control.InitializeKeystore(keyFile)
 
 	scopedParams := server.ScopedMiddleWareParams{
+		LangMap:      *config.LoadLangs(),
 		EnableCache:  enableCache,
 		KeyAndSalt:   keyAndSalt,
 		KeyStore:     keyStore,

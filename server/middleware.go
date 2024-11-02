@@ -24,6 +24,7 @@ import (
 )
 
 const (
+	LangMapContextKey     contextKey = "langMap"
 	MasterKeyContextKey   contextKey = "masterKey"
 	KeyStoreContextKey    contextKey = "keyStore"
 	EnableCacheContextKey contextKey = "enableCache"
@@ -35,6 +36,7 @@ func ScopedMiddleWare(f http.HandlerFunc, params ScopedMiddleWareParams) http.Ha
 		r.Body = http.MaxBytesReader(w, r.Body, int64(params.MaxBytesSize))
 
 		ctx := r.Context()
+		ctx = context.WithValue(ctx, LangMapContextKey, params.LangMap)
 		ctx = context.WithValue(ctx, MasterKeyContextKey, params.KeyAndSalt)
 		ctx = context.WithValue(ctx, KeyStoreContextKey, params.KeyStore)
 		ctx = context.WithValue(ctx, EnableCacheContextKey, params.EnableCache)

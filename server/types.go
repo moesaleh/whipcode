@@ -23,7 +23,10 @@ import (
 
 type contextKey string
 
+type LangMap map[string]map[string]string
+
 type ScopedMiddleWareParams struct {
+	LangMap      LangMap
 	EnableCache  bool
 	KeyAndSalt   []string
 	MaxBytesSize int

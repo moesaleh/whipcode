@@ -44,33 +44,6 @@ func (l *LanguageID) UnmarshalJSON(b []byte) error {
 	return json.Unmarshal(b, &l.value)
 }
 
-func getLanguageConfig() map[string]map[string]string {
-	return map[string]map[string]string{
-		"1":  {"entry": "python", "ext": "py", "image": "whipcode-python"},
-		"2":  {"entry": "nodejs", "ext": "js", "image": "whipcode-nodejs"},
-		"3":  {"entry": "bash", "ext": "sh", "image": "whipcode-bash"},
-		"4":  {"entry": "perl", "ext": "pl", "image": "whipcode-perl"},
-		"5":  {"entry": "lua", "ext": "lua", "image": "whipcode-lua"},
-		"6":  {"entry": "ruby", "ext": "rb", "image": "whipcode-ruby"},
-		"7":  {"entry": "c", "ext": "c", "image": "whipcode-c"},
-		"8":  {"entry": "cpp", "ext": "cpp", "image": "whipcode-cpp"},
-		"9":  {"entry": "rust", "ext": "rs", "image": "whipcode-rust"},
-		"10": {"entry": "fortran", "ext": "f90", "image": "whipcode-fortran"},
-		"11": {"entry": "haskell", "ext": "hs", "image": "whipcode-haskell"},
-		"12": {"entry": "java", "ext": "java", "image": "whipcode-java"},
-		"13": {"entry": "go", "ext": "go", "image": "whipcode-go"},
-		"14": {"entry": "typescript", "ext": "ts", "image": "whipcode-typescript"},
-		"15": {"entry": "clisp", "ext": "lisp", "image": "whipcode-clisp"},
-		"16": {"entry": "racket", "ext": "rkt", "image": "whipcode-racket"},
-		"17": {"entry": "crystal", "ext": "cr", "image": "whipcode-crystal"},
-		"18": {"entry": "clojure", "ext": "clj", "image": "whipcode-clojure"},
-		"19": {"entry": "nasm", "ext": "asm", "image": "whipcode-nasm"},
-		"20": {"entry": "zig", "ext": "zig", "image": "whipcode-zig"},
-		"21": {"entry": "nim", "ext": "nim", "image": "whipcode-nim"},
-		"22": {"entry": "d", "ext": "d", "image": "whipcode-d"},
-	}
-}
-
 func Run(w http.ResponseWriter, r *http.Request) {
 	masterKey := r.Header.Get("X-Master-Key")
 
@@ -98,7 +71,8 @@ func Run(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	langConfig, exists := getLanguageConfig()[user.LanguageID.value]
+	langMap, _ := r.Context().Value(server.LangMapContextKey).(server.LangMap)
+	langConfig, exists := langMap[user.LanguageID.value]
 	if !exists {
 		server.Send(w, http.StatusBadRequest, []byte(`{"detail": "invalid value for parameter language_id, refer to the documentation"}`), "application/json")
 		return

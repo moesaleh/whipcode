@@ -19,6 +19,8 @@ package config
 import (
 	"log"
 
+	"whipcode/server"
+
 	"github.com/BurntSushi/toml"
 )
 
@@ -28,4 +30,12 @@ func LoadConfig(path string) *Config {
 		log.Fatalf("Could not load config file: %v", err)
 	}
 	return &config
+}
+
+func LoadLangs() *server.LangMap {
+	var langs = make(server.LangMap)
+	if _, err := toml.DecodeFile("languages.toml", &langs); err != nil {
+		log.Fatalf("Could not load language map: %v", err)
+	}
+	return &langs
 }
