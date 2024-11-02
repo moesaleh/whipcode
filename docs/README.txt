@@ -30,6 +30,7 @@ Supported languages:
     Zig                   20
     Nim                   21
     D                     22     GDC
+    C#                    23     Mono
 
     To add interpreters/compilers, see:
         - scripts/images.sh

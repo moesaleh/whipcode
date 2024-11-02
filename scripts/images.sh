@@ -51,6 +51,7 @@ declare -A langs=(
     [zig]='zig'
     [nim]='nim gcc'
     [d]='gcc-gdc'
+    [csharp]='&& apk add mono --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing'
 )
 
 HEADER="FROM docker.io/alpine:latest"
