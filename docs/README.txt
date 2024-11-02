@@ -107,8 +107,9 @@ Start the service:
         $ export HISTFILE=/dev/null
         $ task key -- <KEY>
 
-    Copy the configuration template:
-        $ cp config.toml.example config.toml
+    Copy the configuration templates:
+        $ cp config.default.toml config.toml
+        $ cp languages.default.toml languages.toml
 
     Default port 8000:
         $ task run
