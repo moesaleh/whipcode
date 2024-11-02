@@ -40,7 +40,7 @@ func NewExecutor(timeout int) *Executor {
 
 func (ex *Executor) RunCode(code, entry, ext, img string, enableCache bool) (int, map[string]interface{}) {
 	if enableCache {
-		if item := ex.execCache.Get(code); item != nil {
+		if item := ex.execCache.Get(entry + code); item != nil {
 			go item.Extend(time.Hour * 24)
 			return http.StatusOK, item.Value()
 		}
@@ -102,7 +102,7 @@ func (ex *Executor) RunCode(code, entry, ext, img string, enableCache bool) (int
 		}
 
 		if enableCache {
-			go ex.execCache.Set(code, result, time.Hour*24)
+			go ex.execCache.Set(entry+code, result, time.Hour*24)
 		}
 
 		return http.StatusOK, result
@@ -125,7 +125,7 @@ func (ex *Executor) RunCode(code, entry, ext, img string, enableCache bool) (int
 	}
 
 	if enableCache {
-		go ex.execCache.Set(code, result, time.Hour*24)
+		go ex.execCache.Set(entry+code, result, time.Hour*24)
 	}
 
 	return http.StatusOK, result
