@@ -8,28 +8,35 @@ See https://whipcode.app/#docs for API documentation.
 
 
 Supported languages:
-    Python                 1
-    JavaScript             2
+    Python                 1     CPython
+    JavaScript             2     Node.js
     Bash                   3
     Perl                   4
     Lua	                   5
     Ruby                   6
-    C                      7
-    C++                    8
+    C                      7     GCC
+    C++                    8     GCC
     Rust                   9
-    Fortran               10
-    Haskell               11
-    Java                  12
-    Go                    13
-    TypeScript            14
-    Common Lisp           15
+    Fortran               10     GFortran
+    Haskell               11     GHC
+    Java                  12     OpenJDK
+    Go                    13     GCC-Go
+    TypeScript            14     SWC -> Node.js
+    Common Lisp           15     SBCL
     Racket                16
     Crystal               17
     Clojure               18
-    x86 Assembly          19
+    x86 Assembly          19     NASM
     Zig                   20
     Nim                   21
-    D                     22
+    D                     22     GDC
+
+    To add interpreters/compilers, see:
+        - scripts/images.sh
+        - scripts/extra_setup/
+        - entry/
+        - routes/run.go
+        - scripts/tests.sh
 
 
 Please set this up on a SELinux-enabled system.
