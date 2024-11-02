@@ -38,15 +38,15 @@ Tested on Fedora Server 41.
 
 Environment setup:
     Go:
-        $ wget https://go.dev/dl/go1.<version>.linux-<arch>.tar.gz
+        $ wget https://go.dev/dl/go1.<version>.linux-amd64.tar.gz
         $ sudo rm -rf /usr/local/go
-        $ sudo tar -C /usr/local -xzf go1.<version>.linux-<arch>.tar.gz
+        $ sudo tar -C /usr/local -xzf go1.<version>.linux-amd64.tar.gz
         $ sudo echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile
         $ source /etc/profile
 
     go-task:
-        $ wget https://github.com/go-task/task/releases/latest/download/task_linux_<arch>.rpm
-        $ sudo dnf install task_linux_<arch>.rpm
+        $ wget https://github.com/go-task/task/releases/latest/download/task_linux_amd64.rpm
+        $ sudo dnf install task_linux_amd64.rpm
 
     Podman:
         $ sudo dnf install podman
