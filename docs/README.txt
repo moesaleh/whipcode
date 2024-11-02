@@ -108,8 +108,7 @@ Start the service:
         $ task key -- <KEY>
 
     Copy the configuration templates:
-        $ cp config.default.toml config.toml
-        $ cp languages.default.toml languages.toml
+        $ task config-init
 
     Default port 8000:
         $ task run

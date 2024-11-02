@@ -1,6 +1,11 @@
 version: "3"
 
 tasks:
+  config-init:
+    cmds:
+      - cp config.default.toml config.toml
+      - cp languages.default.toml languages.toml
+
   update:
     cmds:
       - git pull
