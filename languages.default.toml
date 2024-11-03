@@ -122,3 +122,8 @@ image = "whipcode-rscript"
 entry = "dart"
 ext = "dart"
 image = "whipcode-dart"
+
+[26]
+entry = "vb"
+ext = "vb"
+image = "whipcode-vb"

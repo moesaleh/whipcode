@@ -33,6 +33,7 @@ Supported languages:
     C#                    23     mono
     Rscript               24
     Dart                  25
+    VB.NET                25     mono
 
     To add interpreters/compilers, see:
         - scripts/images.sh

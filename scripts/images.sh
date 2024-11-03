@@ -54,6 +54,7 @@ declare -A langs=(
     [csharp]='wget && apk add mono --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing'
     [rscript]='R'
     [dart]='&& apk add dart --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing'
+    [vb]='&& apk add mono --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing'
 )
 
 HEADER="FROM docker.io/alpine:latest"

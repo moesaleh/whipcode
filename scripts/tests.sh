@@ -44,6 +44,7 @@ declare -A langs=(
     [23]='Console.WriteLine("Success!");'
     [24]='print("Success!")'
     [25]='void main() { print("Success!"); }'
+    [26]='Module Program\n     Sub Main()\n          Console.WriteLine("Success!")\n     End Sub\nEnd Module'
 )
 
 for i in "${!langs[@]}"; do
