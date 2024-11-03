@@ -1,1 +1,1 @@
-node /source.js
+node $@ source.js

@@ -1,1 +1,1 @@
-python3 /source.py
+python3 $@ source.py

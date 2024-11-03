@@ -1,1 +1,1 @@
-Rscript /source.r
+Rscript $@ source.r

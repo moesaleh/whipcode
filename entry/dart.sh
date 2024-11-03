@@ -1,1 +1,1 @@
-dart run /source.dart
+dart run $@ source.dart

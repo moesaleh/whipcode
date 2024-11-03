@@ -1,1 +1,1 @@
-bash /source.sh
+bash $@ source.sh

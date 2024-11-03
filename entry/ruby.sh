@@ -1,1 +1,1 @@
-ruby /source.rb
+ruby $@ source.rb

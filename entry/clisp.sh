@@ -1,1 +1,1 @@
-sbcl --script /source.lisp
+sbcl --script $@ source.lisp

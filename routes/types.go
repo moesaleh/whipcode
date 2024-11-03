@@ -19,6 +19,7 @@ package routes
 type User struct {
 	Code       string     `json:"code"`
 	LanguageID LanguageID `json:"language_id"`
+	Args       string     `json:"args"`
 }
 
 type LanguageID struct {

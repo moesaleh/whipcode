@@ -1,1 +1,1 @@
-clojure /source.clj
+clojure $@ source.clj

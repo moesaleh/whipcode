@@ -89,7 +89,7 @@ func Run(w http.ResponseWriter, r *http.Request) {
 	img := langConfig["image"]
 
 	ex, _ := r.Context().Value(server.ExecutorContextKey).(podman.Executor)
-	status, result := ex.RunCode(string(codeBytes), entry, ext, img, r.Context().Value(server.EnableCacheContextKey).(bool))
+	status, result := ex.RunCode(string(codeBytes), entry, user.Args, ext, img, r.Context().Value(server.EnableCacheContextKey).(bool))
 	resultBytes, _ := json.Marshal(result)
 
 	server.Send(w, status, resultBytes, "application/json")

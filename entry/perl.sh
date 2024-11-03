@@ -1,1 +1,1 @@
-perl /source.pl
+perl $@ source.pl

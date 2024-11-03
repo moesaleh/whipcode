@@ -1,1 +1,1 @@
-lua /source.lua
+lua $@ source.lua

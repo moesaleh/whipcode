@@ -8,29 +8,29 @@ See https://whipcode.app/#docs for API documentation.
 
 
 Supported languages:
-    Python                 1     CPython
-    JavaScript             2     Node.js
+    Python                 1     cpython
+    JavaScript             2     node.js
     Bash                   3
     Perl                   4
     Lua	                   5
     Ruby                   6
-    C                      7     GCC
-    C++                    8     GCC
+    C                      7     gcc
+    C++                    8     gcc
     Rust                   9
-    Fortran               10     GFortran
-    Haskell               11     GHC
-    Java                  12     OpenJDK
-    Go                    13     GCC-Go
-    TypeScript            14     SWC -> Node.js
-    Common Lisp           15     SBCL
+    Fortran               10     gfortran
+    Haskell               11     runghc
+    Java                  12     openjdk
+    Go                    13     gccgo
+    TypeScript            14     swc -> node.js
+    Common Lisp           15     sbcl
     Racket                16
     Crystal               17
     Clojure               18
-    x86 Assembly          19     NASM
+    x86 Assembly          19     nasm
     Zig                   20
     Nim                   21
-    D                     22     GDC
-    C#                    23     Mono
+    D                     22     gdc
+    C#                    23     mono
     Rscript               24
     Dart                  25
 

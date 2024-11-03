@@ -1,1 +1,1 @@
-java /source.java
+java $@ source.java

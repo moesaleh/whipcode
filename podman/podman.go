@@ -38,7 +38,7 @@ func NewExecutor(timeout int) *Executor {
 	return &Executor{execCache: cache, timeout: timeout}
 }
 
-func (ex *Executor) RunCode(code, entry, ext, img string, enableCache bool) (int, map[string]interface{}) {
+func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache bool) (int, map[string]interface{}) {
 	if enableCache {
 		if item := ex.execCache.Get(entry + code); item != nil {
 			go item.Extend(time.Hour * 24)
@@ -60,6 +60,12 @@ func (ex *Executor) RunCode(code, entry, ext, img string, enableCache bool) (int
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(ex.timeout)*time.Second)
 	defer cancel()
+
+	argsSlice := strings.Fields(cArgs)
+	for i, arg := range argsSlice {
+		argsSlice[i] = "'" + strings.ReplaceAll(arg, "'", "'\\''") + "'"
+	}
+	cArgs = strings.Join(argsSlice, " ")
 
 	var stdout, stderr bytes.Buffer
 	args := []string{
@@ -84,7 +90,7 @@ func (ex *Executor) RunCode(code, entry, ext, img string, enableCache bool) (int
 		"--security-opt", "proc-opts=hidepid=2,subset=pid",
 		"--volume", fmt.Sprintf("./entry/%s.sh:/entry.sh:z,ro", entry),
 		"--volume", fmt.Sprintf("./run/%s:/source.%s:Z,ro", srcFileName, ext),
-		img, "sh", "-c", "echo stdout-start && echo stderr-start >&2 && sh ./entry.sh",
+		img, "sh", "-c", fmt.Sprintf("echo stdout-start && echo stderr-start >&2 && sh ./entry.sh %s", cArgs),
 	}
 	cmdExec := exec.CommandContext(ctx, "/usr/bin/podman", args...)
 	cmdExec.Stdout = &stdout

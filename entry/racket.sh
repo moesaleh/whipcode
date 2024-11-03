@@ -1,1 +1,1 @@
-racket /source.rkt
+racket $@ source.rkt
