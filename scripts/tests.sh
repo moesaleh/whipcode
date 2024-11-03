@@ -41,7 +41,7 @@ declare -A langs=(
     [20]='const std = @import("std");pub fn main() !void { std.io.getStdOut().writeAll("Success!") catch unreachable; }'
     [21]='echo "Success!"'
     [22]='import std.stdio; void main() { writeln("Success!"); }'
-    [23]='System.Console.WriteLine("Success!");'
+    [23]='Console.WriteLine("Success!");'
     [24]='print("Success!")'
     [25]='void main() { print("Success!"); }'
 )
