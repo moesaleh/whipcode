@@ -51,7 +51,7 @@ declare -A langs=(
     [zig]='zig'
     [nim]='nim gcc'
     [d]='gcc-gdc'
-    [csharp]='&& apk add mono --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing'
+    [csharp]='wget && apk add mono --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing'
     [rscript]='R'
     [dart]='&& apk add dart --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing'
 )
