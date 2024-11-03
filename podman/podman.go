@@ -39,8 +39,14 @@ func NewExecutor(timeout int) *Executor {
 }
 
 func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache bool) (int, map[string]interface{}) {
+	argsSlice := strings.Fields(cArgs)
+	for i, arg := range argsSlice {
+		argsSlice[i] = "'" + strings.ReplaceAll(arg, "'", "'\\''") + "'"
+	}
+	cArgs = strings.Join(argsSlice, " ")
+
 	if enableCache {
-		if item := ex.execCache.Get(entry + code); item != nil {
+		if item := ex.execCache.Get(cArgs + entry + code); item != nil {
 			go item.Extend(time.Hour * 24)
 			return http.StatusOK, item.Value()
 		}
@@ -60,12 +66,6 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(ex.timeout)*time.Second)
 	defer cancel()
-
-	argsSlice := strings.Fields(cArgs)
-	for i, arg := range argsSlice {
-		argsSlice[i] = "'" + strings.ReplaceAll(arg, "'", "'\\''") + "'"
-	}
-	cArgs = strings.Join(argsSlice, " ")
 
 	var stdout, stderr bytes.Buffer
 	args := []string{
@@ -109,7 +109,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 		}
 
 		if enableCache {
-			go ex.execCache.Set(entry+code, result, time.Hour*24)
+			go ex.execCache.Set(cArgs+entry+code, result, time.Hour*24)
 		}
 
 		return http.StatusOK, result
@@ -132,7 +132,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 	}
 
 	if enableCache {
-		go ex.execCache.Set(entry+code, result, time.Hour*24)
+		go ex.execCache.Set(cArgs+entry+code, result, time.Hour*24)
 	}
 
 	return http.StatusOK, result
