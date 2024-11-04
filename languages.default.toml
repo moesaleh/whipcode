@@ -127,3 +127,8 @@ image = "whipcode-dart"
 entry = "vb"
 ext = "vb"
 image = "whipcode-vb"
+
+[27]
+entry = "fsharp"
+ext = "fs"
+image = "whipcode-fsharp"
