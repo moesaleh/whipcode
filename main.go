@@ -34,7 +34,7 @@ import (
 	"whipcode/server"
 )
 
-const VERSION = "1.2.0"
+const VERSION = "1.2.1"
 
 func main() {
 	var version, enableTLS, enableCache, enablePing, standalone bool
