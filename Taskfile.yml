@@ -63,7 +63,7 @@ tasks:
 
   logs:
     cmds:
-      - journalctl --user -x -e -u _PID=$(systemctl --user show --property MainPID whipcode | cut -d= -f2)
+      - journalctl --user -x -e _PID=$(systemctl --user show --property MainPID whipcode | cut -d= -f2)
 
   logs-full:
     cmds:
