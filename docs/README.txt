@@ -129,6 +129,14 @@ Start the service:
         If you see 16 responses with "Success!" in the `stdout` field,
         the service is working correctly.
 
+    To install the systemd user service:
+        $ task systemd-install
+
+    View status/logs with:
+        $ task status
+        $ task logs        # only logs from whipcode
+        $ task logs-full   # logs including podman
+
 
 CLI options:
     -p, --port  PORT
