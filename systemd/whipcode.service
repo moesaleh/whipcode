@@ -1,0 +1,18 @@
+[Unit]
+Description=Whipcode API
+After=network.target
+AssertSecurity=selinux
+AssertPathExists=/path/to/whipcode/config.toml
+AssertPathExists=/path/to/whipcode/languages.toml
+
+[Service]
+Type=exec
+ExecStart=/path/to/whipcode/bin/whipcode
+WorkingDirectory=/path/to/whipcode
+Restart=always
+RestartSec=3
+KillSignal=SIGTERM
+ExitType=main
+
+[Install]
+WantedBy=default.target

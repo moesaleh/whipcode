@@ -1,15 +1,11 @@
 version: "3"
 
 tasks:
-  config-init:
+  run:
     cmds:
-      - cp config.default.toml config.toml
-      - cp languages.default.toml languages.toml
+      - ./bin/whipcode {{.CLI_ARGS}}
 
-  update:
-    cmds:
-      - git pull
-      - task all
+    silent: true
 
   build:
     cmds:
@@ -34,16 +30,41 @@ tasks:
       - task build
       - task build-images
 
+  update:
+    cmds:
+      - git pull
+      - task all
+
+  config-init:
+    cmds:
+      - cp config.default.toml config.toml
+      - cp languages.default.toml languages.toml
+
   key:
     cmds:
       - echo -n "{{.CLI_ARGS}}" | bash scripts/masterkey.sh
 
-  run:
-    cmds:
-      - ./bin/whipcode {{.CLI_ARGS}}
-
-    silent: true
-
   test:
     cmds:
       - bash scripts/tests.sh
+
+  systemd-install:
+    cmds:
+      - mkdir -p $HOME/.config/systemd/user/
+      - cp systemd/whipcode.service $HOME/.config/systemd/user/
+      - sed -i "s|/path/to/whipcode|$(pwd)|g" $HOME/.config/systemd/user/whipcode.service
+      - systemctl --user daemon-reload
+      - systemctl --user enable --now whipcode
+      - sudo loginctl enable-linger $USER
+
+  status:
+    cmds:
+      - systemctl --user status whipcode
+
+  logs:
+    cmds:
+      - journalctl --user -x -e -u _PID=$(systemctl --user show --property MainPID whipcode | cut -d= -f2)
+
+  logs-full:
+    cmds:
+      - journalctl --user -x -e -u whipcode
