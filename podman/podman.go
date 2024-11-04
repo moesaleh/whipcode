@@ -20,7 +20,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -30,6 +29,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/charmbracelet/log"
 	"github.com/karlseguin/ccache/v3"
 )
 
@@ -40,7 +40,7 @@ func NewExecutor(timeout int) *Executor {
 
 func Cleanup() {
 	if err := os.RemoveAll(filepath.Join(".", "run")); err != nil {
-		log.Printf("Could not clean up temp files: %v", err)
+		log.Error("Could not clean up temp dir", "Error", err)
 	}
 }
 
@@ -63,7 +63,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 	srcFilePath := filepath.Join(".", "run", srcFileName)
 
 	if err := os.WriteFile(srcFilePath, []byte(code), 0644); err != nil {
-		log.Printf("Could not write temp file: %v", err)
+		log.Error("Could not write temp file", "Error", err)
 		return http.StatusInternalServerError, map[string]interface{}{
 			"detail": "internal server error",
 		}
@@ -124,7 +124,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 	stdoutStr := stdout.String()
 	stderrStr := stderr.String()
 	if !(strings.HasPrefix(stdoutStr, "stdout-start")) || !(strings.HasPrefix(stderrStr, "stderr-start")) {
-		log.Printf("Blocked unsafe output: stdout: %s stderr: %s", stdoutStr, stderrStr)
+		log.Warn("Blocked unsafe output", "STDOUT", stdoutStr, "STDERR", stderrStr)
 		return http.StatusInternalServerError, map[string]interface{}{
 			"detail": "internal server error",
 		}

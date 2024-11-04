@@ -18,13 +18,14 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"time"
+
+	"github.com/charmbracelet/log"
 )
 
 func StartServer(port int, handler http.Handler, enableTLS bool) {
-	log.Printf("Starting whipcode on port: %d", port)
+	log.Info("Starting whipcode", "Port", port, "TLS", enableTLS)
 
 	addr := fmt.Sprintf(":%d", port)
 	srv := &http.Server{
@@ -43,6 +44,6 @@ func StartServer(port int, handler http.Handler, enableTLS bool) {
 	}
 
 	if err != nil {
-		log.Fatalf("Fatal: %v", err)
+		log.Fatal("Server error", "Error", err)
 	}
 }

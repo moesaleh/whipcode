@@ -18,9 +18,11 @@ package server
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"net"
 	"net/http"
+
+	"github.com/charmbracelet/log"
 )
 
 const (
@@ -49,22 +51,23 @@ func ScopedMiddleWare(f http.HandlerFunc, params ScopedMiddleWareParams) http.Ha
 func MiddleWare(handler http.Handler, params MiddleWareParams) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		host, _, _ := net.SplitHostPort(r.RemoteAddr)
+		details := fmt.Sprintf("%s %s %s", host, r.Method, r.URL)
+
+		if params.Proxy != "" && host != params.Proxy {
+			log.Info(details, "Blocked", "host not allowed")
+			w.WriteHeader(http.StatusForbidden)
+			return
+		}
 
 		if params.Standalone && !params.RateLimiter.CheckClient(host, params.RlBurst, params.RlRefill) {
-			log.Printf("%s %s %s [blocked: rate]", host, r.Method, r.URL)
+			log.Info(details, "Blocked", "rate limit exceeded")
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusTooManyRequests)
 			w.Write([]byte(`{"detail": "you are sending too many requests"}`))
 			return
 		}
 
-		log.Printf("%s %s %s", host, r.Method, r.URL)
-
-		if params.Proxy != "" && host != params.Proxy {
-			log.Printf("%s %s %s [blocked: proxy]", host, r.Method, r.URL)
-			w.WriteHeader(http.StatusForbidden)
-			return
-		}
+		log.Info(details)
 
 		handler.ServeHTTP(w, r)
 	})

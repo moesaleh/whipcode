@@ -23,6 +23,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/charmbracelet/log"
+
 	"whipcode/control"
 	"whipcode/podman"
 	"whipcode/server"
@@ -48,12 +50,14 @@ func Run(w http.ResponseWriter, r *http.Request) {
 	masterKey := r.Header.Get("X-Master-Key")
 
 	if masterKey == "" {
+		log.Warn("Unauthorized request", "Reason", "missing master key")
 		server.Send(w, http.StatusUnauthorized, []byte(`{"detail": "unauthorized"}`), "application/json")
 		return
 	}
 
 	ks, _ := r.Context().Value(server.KeyStoreContextKey).(*control.KeyStore)
 	if !ks.CheckKey(masterKey, r.Context().Value(server.MasterKeyContextKey).([]string)) {
+		log.Warn("Unauthorized request", "Reason", "invalid master key")
 		server.Send(w, http.StatusUnauthorized, []byte(`{"detail": "unauthorized"}`), "application/json")
 		return
 	}

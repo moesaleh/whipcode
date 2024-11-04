@@ -17,8 +17,9 @@
 package server
 
 import (
-	"log"
 	"net/http"
+
+	"github.com/charmbracelet/log"
 )
 
 func Send(w http.ResponseWriter, status int, message []byte, contentType string) {
@@ -26,6 +27,6 @@ func Send(w http.ResponseWriter, status int, message []byte, contentType string)
 	w.WriteHeader(status)
 	if _, err := w.Write(message); err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
-		log.Printf("Error sending response: %v", err)
+		log.Error("Failed to write response", "Error", err)
 	}
 }

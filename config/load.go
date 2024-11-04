@@ -17,25 +17,24 @@
 package config
 
 import (
-	"log"
-
 	"whipcode/server"
 
 	"github.com/BurntSushi/toml"
+	"github.com/charmbracelet/log"
 )
 
 func LoadConfig(path string) *Config {
 	var config Config
 	if _, err := toml.DecodeFile(path, &config); err != nil {
-		log.Fatalf("Could not load config file: %v", err)
+		log.Fatal("Could not load config", "File", path, "Error", err)
 	}
 	return &config
 }
 
-func LoadLangs() *server.LangMap {
+func LoadLangs(path string) *server.LangMap {
 	var langs = make(server.LangMap)
-	if _, err := toml.DecodeFile("languages.toml", &langs); err != nil {
-		log.Fatalf("Could not load language map: %v", err)
+	if _, err := toml.DecodeFile(path, &langs); err != nil {
+		log.Fatal("Could not load language map", "File", path, "Error", err)
 	}
 	return &langs
 }

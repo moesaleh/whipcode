@@ -19,12 +19,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"syscall"
+
+	"github.com/charmbracelet/log"
 
 	"whipcode/config"
 	"whipcode/control"
@@ -83,8 +84,14 @@ func main() {
 		return
 	}
 
+	logger := log.NewWithOptions(os.Stderr, log.Options{
+		ReportTimestamp: true,
+		TimeFormat:      "2006-01-02 15:04:05",
+	})
+	log.SetDefault(logger)
+
 	if err := os.MkdirAll(filepath.Join(".", "run"), 0755); err != nil {
-		log.Fatalf("Fatal: Could not create run directory: %v", err)
+		log.Fatal("Could not create temp dir", "Error", err)
 	}
 
 	exitChan := make(chan os.Signal, 1)
@@ -98,7 +105,7 @@ func main() {
 	keyStore, keyAndSalt := control.InitializeKeystore(keyFile)
 
 	scopedParams := server.ScopedMiddleWareParams{
-		LangMap:      *config.LoadLangs(),
+		LangMap:      *config.LoadLangs("languages.toml"),
 		EnableCache:  enableCache,
 		KeyAndSalt:   keyAndSalt,
 		KeyStore:     keyStore,

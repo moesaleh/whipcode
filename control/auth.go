@@ -18,10 +18,10 @@ package control
 
 import (
 	"encoding/hex"
-	"log"
 	"os"
 	"strings"
 
+	"github.com/charmbracelet/log"
 	"golang.org/x/crypto/argon2"
 )
 
@@ -37,14 +37,14 @@ func (ks *KeyStore) CheckKey(userKey string, serverKey []string) bool {
 }
 
 func InitializeKeystore(keyFile string) (*KeyStore, []string) {
-	file, errH := os.ReadFile(keyFile)
-	if errH != nil {
-		log.Fatalf("Fatal: Could not read %s: %s", keyFile, errH)
+	file, err := os.ReadFile(keyFile)
+	if err != nil {
+		log.Fatal("Could not read master key", "File", keyFile, "Error", err)
 	}
 
 	keyAndSalt := strings.Split(string(file), "\n")
 	if len(keyAndSalt) != 2 || len(keyAndSalt[1]) < 1 {
-		log.Fatal("Fatal: Key file format invalid")
+		log.Fatal("Invalid master key format", "File", keyFile)
 	}
 	keyStore := KeyStore{}
 
