@@ -34,6 +34,7 @@ Supported languages:
     Rscript               24
     Dart                  25
     VB.NET                26     mono
+    F#                    27     mono
 
     To add interpreters/compilers, see:
         - scripts/images.sh
