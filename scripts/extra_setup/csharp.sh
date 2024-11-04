@@ -2,6 +2,7 @@ wget https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers.Toolset/4.11.0
 unzip /tmp/Microsoft.Net.Compilers.Toolset.nupkg -d /tmp/Microsoft.Net.Compilers.Toolset
 mv /tmp/Microsoft.Net.Compilers.Toolset/tasks/net472/* /usr/lib/mono/4.5/
 rm -rf /tmp/Microsoft.Net.Compilers.Toolset
+rm -f /tmp/Microsoft.Net.Compilers.Toolset.nupkg
 
 echo -e "
 global using global::System;
