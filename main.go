@@ -22,7 +22,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
 
 	"whipcode/config"
 	"whipcode/control"
@@ -84,6 +86,14 @@ func main() {
 	if err := os.MkdirAll(filepath.Join(".", "run"), 0755); err != nil {
 		log.Fatalf("Fatal: Could not create run directory: %v", err)
 	}
+
+	exitChan := make(chan os.Signal, 1)
+	signal.Notify(exitChan, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-exitChan
+		podman.Cleanup()
+		os.Exit(0)
+	}()
 
 	keyStore, keyAndSalt := control.InitializeKeystore(keyFile)
 

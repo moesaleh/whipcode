@@ -38,6 +38,12 @@ func NewExecutor(timeout int) *Executor {
 	return &Executor{execCache: cache, timeout: timeout}
 }
 
+func Cleanup() {
+	if err := os.RemoveAll(filepath.Join(".", "run")); err != nil {
+		log.Printf("Could not clean up temp files: %v", err)
+	}
+}
+
 func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache bool) (int, map[string]interface{}) {
 	argsSlice := strings.Fields(cArgs)
 	for i, arg := range argsSlice {
@@ -54,10 +60,10 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 
 	boxID := strconv.Itoa(rand.Intn(9000000) + 1000000)
 	srcFileName := fmt.Sprintf("run%s.%s", boxID, ext)
-	srcFilePath := filepath.Join("./run", srcFileName)
+	srcFilePath := filepath.Join(".", "run", srcFileName)
 
 	if err := os.WriteFile(srcFilePath, []byte(code), 0644); err != nil {
-		log.Println("Could not write temp file:", err)
+		log.Printf("Could not write temp file: %v", err)
 		return http.StatusInternalServerError, map[string]interface{}{
 			"detail": "internal server error",
 		}
@@ -73,9 +79,9 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 		"--rm",
 		"--read-only",
 		"--no-hosts",
-		"--hostname", fmt.Sprintf("box%s", boxID),
+		"--hostname", "box" + boxID,
 		"--network", "none",
-		"--timeout", fmt.Sprintf("%d", ex.timeout+2),
+		"--timeout", strconv.Itoa(ex.timeout + 1),
 		"--cap-drop", "ALL",
 		"--memory", "512m",
 		"--memory-reservation", "128m",
@@ -90,7 +96,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 		"--security-opt", "proc-opts=hidepid=2,subset=pid",
 		"--volume", fmt.Sprintf("./entry/%s.sh:/entry.sh:z,ro", entry),
 		"--volume", fmt.Sprintf("./run/%s:/source.%s:Z,ro", srcFileName, ext),
-		img, "sh", "-c", fmt.Sprintf("echo stdout-start && echo stderr-start >&2 && sh ./entry.sh %s", cArgs),
+		img, "sh", "-c", "echo stdout-start && echo stderr-start >&2 && sh ./entry.sh " + cArgs,
 	}
 	cmdExec := exec.CommandContext(ctx, "/usr/bin/podman", args...)
 	cmdExec.Stdout = &stdout
@@ -118,7 +124,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 	stdoutStr := stdout.String()
 	stderrStr := stderr.String()
 	if !(strings.HasPrefix(stdoutStr, "stdout-start")) || !(strings.HasPrefix(stderrStr, "stderr-start")) {
-		log.Println("Blocked unsafe output:", "stdout:", stdoutStr, "stderr:", stderrStr)
+		log.Printf("Blocked unsafe output: stdout: %s stderr: %s", stdoutStr, stderrStr)
 		return http.StatusInternalServerError, map[string]interface{}{
 			"detail": "internal server error",
 		}
