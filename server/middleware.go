@@ -54,7 +54,7 @@ func MiddleWare(handler http.Handler, params MiddleWareParams) http.Handler {
 		details := fmt.Sprintf("%s %s %s", host, r.Method, r.URL)
 
 		if params.Proxy != "" && host != params.Proxy {
-			log.Info(details, "Blocked", "host not allowed")
+			log.Warn(details, "Blocked", "host not allowed")
 			w.WriteHeader(http.StatusForbidden)
 			return
 		}

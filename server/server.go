@@ -44,6 +44,6 @@ func StartServer(port int, handler http.Handler, enableTLS bool) {
 	}
 
 	if err != nil {
-		log.Fatal("Server error", "Error", err)
+		log.Fatal("Server failed", "Error", err)
 	}
 }

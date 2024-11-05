@@ -63,7 +63,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 	srcFilePath := filepath.Join(".", "run", srcFileName)
 
 	if err := os.WriteFile(srcFilePath, []byte(code), 0644); err != nil {
-		log.Error("Could not write temp file", "Error", err)
+		log.Error("Could not write to temp file", "Error", err)
 		return http.StatusInternalServerError, map[string]interface{}{
 			"detail": "internal server error",
 		}
@@ -124,7 +124,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 	stdoutStr := stdout.String()
 	stderrStr := stderr.String()
 	if !(strings.HasPrefix(stdoutStr, "stdout-start")) || !(strings.HasPrefix(stderrStr, "stderr-start")) {
-		log.Warn("Blocked unsafe output", "STDOUT", stdoutStr, "STDERR", stderrStr)
+		log.Warn("Caught unsafe output", "STDOUT", stdoutStr, "STDERR", stderrStr)
 		return http.StatusInternalServerError, map[string]interface{}{
 			"detail": "internal server error",
 		}

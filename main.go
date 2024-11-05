@@ -34,14 +34,20 @@ import (
 	"whipcode/server"
 )
 
-const VERSION = "1.2.1"
+const VERSION = "1.2.2"
 
 func main() {
+	logger := log.NewWithOptions(os.Stderr, log.Options{
+		ReportTimestamp: true,
+		TimeFormat:      "2006-01-02 15:04:05",
+	})
+	log.SetDefault(logger)
+
+	fileConfig := config.LoadConfig("config.toml")
+
 	var version, enableTLS, enableCache, enablePing, standalone bool
 	var port, maxBytesSize, rlBurst, rlRefill, timeout int
 	var keyFile, proxy string
-
-	fileConfig := config.LoadConfig("config.toml")
 
 	flag.Usage = func() {
 		fmt.Printf("usage: %s [options]\n", os.Args[0])
@@ -84,11 +90,9 @@ func main() {
 		return
 	}
 
-	logger := log.NewWithOptions(os.Stderr, log.Options{
-		ReportTimestamp: true,
-		TimeFormat:      "2006-01-02 15:04:05",
-	})
-	log.SetDefault(logger)
+	if _, err := os.Stat("/usr/bin/podman"); os.IsNotExist(err) {
+		log.Fatal("/usr/bin/podman not found")
+	}
 
 	if err := os.MkdirAll(filepath.Join(".", "run"), 0755); err != nil {
 		log.Fatal("Could not create temp dir", "Error", err)
