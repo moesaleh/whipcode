@@ -118,12 +118,12 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		server.Send(w, http.StatusNotFound, []byte(`{"detail": "not found"}`), "application/json")
+		server.Send(w, http.StatusNotFound, []byte(`{"detail": "not found"}`))
 	})
 
 	http.HandleFunc("POST /run", server.ScopedMiddleWare(routes.Run, scopedParams))
 	http.HandleFunc("/run", func(w http.ResponseWriter, _ *http.Request) {
-		server.Send(w, http.StatusMethodNotAllowed, []byte(`{"detail": "method not allowed"}`), "application/json")
+		server.Send(w, http.StatusMethodNotAllowed, []byte(`{"detail": "method not allowed"}`))
 	})
 
 	if enablePing {

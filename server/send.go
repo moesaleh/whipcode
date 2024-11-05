@@ -22,9 +22,15 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func Send(w http.ResponseWriter, status int, message []byte, contentType string) {
-	w.Header().Set("Content-Type", contentType)
+func Send(w http.ResponseWriter, status int, message []byte, contentType ...string) {
+	cType := "application/json"
+	if len(contentType) > 0 {
+		cType = contentType[0]
+	}
+
+	w.Header().Set("Content-Type", cType)
 	w.WriteHeader(status)
+
 	if _, err := w.Write(message); err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		log.Error("Failed to write response", "Error", err)
