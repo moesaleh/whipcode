@@ -26,14 +26,17 @@ import (
 )
 
 func (ks *KeyStore) CheckKey(userKey string, serverKey []string) bool {
-	ks.once.Do(func() {
-		hash := argon2.IDKey([]byte(userKey), []byte(serverKey[1]), 1, 4096, 1, 32)
-		if hex.EncodeToString(hash) == strings.TrimSpace(serverKey[0]) {
-			ks.validKey = userKey
-		}
-	})
+	if cachedKey, ok := ks.cachedKey.Load().(string); ok && userKey == cachedKey {
+		return true
+	}
 
-	return userKey == ks.validKey
+	hash := argon2.IDKey([]byte(userKey), []byte(serverKey[1]), 1, 4096, 1, 32)
+	if hex.EncodeToString(hash) == strings.TrimSpace(serverKey[0]) {
+		ks.cachedKey.Store(userKey)
+		return true
+	}
+
+	return false
 }
 
 func InitializeKeystore(keyFile string) (*KeyStore, []string) {

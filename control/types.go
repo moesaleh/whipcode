@@ -18,14 +18,14 @@ package control
 
 import (
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"golang.org/x/time/rate"
 )
 
 type KeyStore struct {
-	validKey string
-	once     sync.Once
+	cachedKey atomic.Value
 }
 
 type Client struct {
