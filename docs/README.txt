@@ -4,7 +4,7 @@ Implemented as a scalable stateless microservice with
 no user management or authentication, minimizing damage
 from potential zero-day breakouts.
 
-See https://whipcode.app/#docs for API documentation.
+See docs/reference.txt for the API reference.
 
 
 Default languages:
