@@ -1,1 +1,2 @@
-gdc source.d $@ -o /tmp/run && ./tmp/run
+gdc source.d $@ -o /tmp/run &&
+./tmp/run
