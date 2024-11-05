@@ -7,7 +7,7 @@ from potential zero-day breakouts.
 See https://whipcode.app/#docs for API documentation.
 
 
-Supported languages:
+Default languages:
     Python                 1     cpython
     JavaScript             2     node.js
     Bash                   3
@@ -21,7 +21,7 @@ Supported languages:
     Haskell               11     runghc
     Java                  12     openjdk
     Go                    13     gccgo
-    TypeScript            14     swc -> node.js
+    TypeScript            14     swc > node.js
     Common Lisp           15     sbcl
     Racket                16
     Crystal               17
