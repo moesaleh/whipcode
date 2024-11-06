@@ -1,8 +1,11 @@
-.DS_Store
 bin/
 tls/
 run/
+
+.DS_Store
 .masterkey
+
 config.toml
 languages.toml
+
 TEMP_CONTAINERFILE
