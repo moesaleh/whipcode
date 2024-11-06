@@ -44,7 +44,7 @@ func Cleanup() {
 	}
 }
 
-func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache bool) (int, map[string]interface{}) {
+func (ex *Executor) RunCode(code, entry, cArgs, ext string, enableCache bool) (int, map[string]interface{}) {
 	argsSlice := strings.Fields(cArgs)
 	for i, arg := range argsSlice {
 		argsSlice[i] = "'" + strings.ReplaceAll(arg, "'", "'\\''") + "'"
@@ -96,7 +96,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext, img string, enableCache boo
 		"--security-opt", "proc-opts=hidepid=2,subset=pid",
 		"--volume", fmt.Sprintf("./entry/%s.sh:/entry.sh:z,ro", entry),
 		"--volume", fmt.Sprintf("./run/%s:/source.%s:Z,ro", srcFileName, ext),
-		img, "sh", "-c", "echo stdout-start && echo stderr-start >&2 && sh ./entry.sh " + cArgs,
+		"whipcode-" + entry, "sh", "-c", "echo stdout-start && echo stderr-start >&2 && sh ./entry.sh " + cArgs,
 	}
 	cmdExec := exec.CommandContext(ctx, "/usr/bin/podman", args...)
 	cmdExec.Stdout = &stdout
