@@ -1,13 +1,17 @@
-*.sh             text diff=bash
 *.gitattributes  text
 *.gitignore      text
 *.editorconfig   text
+
 *.txt            text
-*.go             text diff=golang
-*.mod            text diff=text
-*.sum            text diff=text
-*.yml            text diff=yaml
 *.md             text diff=markdown
+LICENSE          text
+
+*.sh             text diff=bash
+
+*.go             text diff=golang
+*.mod            text
+*.sum            text
+
+*.yml            text diff=yaml
 *.cil            text
 *.service        text
-LICENSE          text
