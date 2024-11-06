@@ -12,7 +12,7 @@ Default languages:
     JavaScript             2     node.js
     Bash                   3
     Perl                   4
-    Lua	                   5
+    Lua                    5
     Ruby                   6
     C                      7     gcc
     C++                    8     gcc
