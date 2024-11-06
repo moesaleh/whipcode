@@ -56,6 +56,7 @@ declare -A langs=(
     [dart]='&& apk add dart --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing'
     [vb]='&& apk add mono --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing'
     [fsharp]='&& apk add mono --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing'
+    [php]='php'
 )
 
 HEADER="FROM docker.io/alpine:latest"
