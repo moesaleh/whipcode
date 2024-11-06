@@ -9,4 +9,5 @@
 *.yml            text diff=yaml
 *.md             text diff=markdown
 *.cil            text
+*.service        text
 LICENSE          text
