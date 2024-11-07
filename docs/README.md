@@ -3,9 +3,9 @@
 <a href="https://go.dev"><img height="20px" alt="Go badge" src="https://github.com/user-attachments/assets/c5115760-24b7-4272-8b48-7b8071e5053d"></a> <a href="https://github.com/containers/podman"><img height="20px" alt="Podman badge" src="https://github.com/user-attachments/assets/89c586f0-6932-49f3-a12f-bbc9b52c2c4f"></a>
  <a href="/LICENSE"><img height="20px" alt="Apache badge" src="https://github.com/user-attachments/assets/2c52fd74-66d1-45a4-a825-2f51c72eedf8"></a> 
 
-REST service for executing untrusted code with Podman.
+REST API for executing untrusted code with Podman.
 
-Implemented as a scalable stateless microservice with no user management or authentication, minimizing damage from potential zero-day breakouts.
+Implemented as a stateless microservice with no user management, minimizing damage from potential zero-day breakouts.
 
 Don't want to self host? Head over to [whipcode.app](https://whipcode.app) to access the live endpoint.
 
@@ -15,7 +15,7 @@ Drop us an email at [hello@whipcode.app](mailto:hello@whipcode.app) if you'd lik
   <summary>Click to see default languages</summary>
   <br/>
 
-| ID  | Language       | RT            |
+| ID  | Language       | Environment   |
 | --- | -------------- | ------------- |
 | 1   | Python         | cpython       |
 | 2   | JavaScript     | node.js       |
@@ -139,7 +139,7 @@ Use `task <action>` to run predefined build actions:
   *Build everything*
 
 - **build**\
-  *Build only the service*
+  *Build only whipcode*
 
 - **build-images**\
   *Build only the container images*
@@ -148,12 +148,12 @@ Use `task <action>` to run predefined build actions:
   *Clean rebuild images*
 
 - **update**\
-  *Update (git pull), build service and images*
+  *Update (git pull), build whipcode and images*
 
 ## Starting the service
 
 > [!WARNING]
-> **Do not** run this service without a reverse proxy or API gateway in front of it. While whipcode does have a standalone mode for per IP rate limiting, it is not meant to be used in production. Use an API gateway like Kong, Tyk and WSO2 to enforce rate limits, policies and authentication. Configure your gateway to add a `X-Master-Key` header to every request with the secret defined below. **Do not** host the gateway on the same system. **Do not** run whipcode as root, or with SELinux disabled/permissive.
+> **Do not** run whipcode without a reverse proxy or API gateway in front of it. While there is a standalone mode for per IP rate limiting, it is not meant to be used in production. Use an API gateway like Kong, Tyk and WSO2 to enforce rate limits, policies and authentication. Configure your gateway to add a `X-Master-Key` header to every request with the secret defined below. **Do not** host the gateway on the same system. **Do not** run whipcode as root, or with SELinux disabled/permissive.
 
 1. Save your master key's argon2 hash to *.masterkey*:
    ```bash
@@ -172,6 +172,7 @@ Use `task <action>` to run predefined build actions:
    # Port 6060 with /ping enabled:
    task run -- --ping --port 6060
    ```
+   The endpoint will be available at `/run`
 
 4. Test the service:  `task test`\
    If every response has "Success!" in the `stdout` field, the service is working correctly.
@@ -223,41 +224,33 @@ task logs-full   # logs including podman
 
 ## API reference
 
+`POST /run`
+
 ### Headers
 - `Content-Type: application/json`
 - `X-Master-Key: $MASTER_KEY`
 
 ### Body
-- **code** [string]\
-  *The source code, base64 encoded.*
-
-- **language_id** [integer/string]\
-  *Language ID of the submitted code.*
-
-- **args** [string] [optional]\
-  *Compiler/interpreter args separated by spaces.*
-
-- **timeout** [integer] [optional]\
-  *Timeout in seconds for the code to run. Capped at the timeout set in whipcode's configuration.*
+| Name          | Required | Type                 | Description                                                                                    |
+| ------------- | -------- | -------------------- | ---------------------------------------------------------------------------------------------- |
+| `code`        | yes      | `string`             | The source code, base64 encoded.                                                               |
+| `language_id` | yes      | `integer` / `string` | Language ID of the submitted code.                                                             |
+| `args`        | no       | `string`             | Compiler/interpreter args separated by spaces.                                                 |
+| `timeout`     | no       | `integer` / `string` | Timeout in seconds for the code to run. Capped at the timeout set in whipcode's configuration. |
 
 ### Response
-- **stdout** [string]\
-  *All data captured from stdout.*
+`200`
+| Name            | Type     | Description                                                     |
+| --------------- | -------- | --------------------------------------------------------------- |
+| `stdout`        | `string` | All data captured from stdout.                                  |
+| `stderr`        | `string` | All data captured from stderr.                                  |
+| `container_age` | `float`  | Duration the container allocated for your code ran, in seconds. |
+| `timeout`       | `bool`   | Boolean value depending on whether your container lived past the timeout period. A reply from a timed-out request will not have any data in stdout and stderr.|
 
-- **stderr** [string]\
-  *All data captured from stderr.*
-
-- **container_age** [float]\
-  *Duration the container allocated for your code ran, in seconds.*
-
-- **timeout** [boolean]\
-  *Boolean value depending on whether your container lived past the timeout period. A reply from a timed-out request will not have any data in stdout and stderr.*
-
-In the event of an error or an invalid/rejected request, the response will contain only:
-
-- **detail** [string]\
-  *Details about why the request failed to complete.*
-
+`400` `401` `403` `404` `405` `415` `429` `500`
+| Name     | Type     | Description                                       |
+| -------- | -------- | ------------------------------------------------- |
+| `detail` | `string` | Details about why the request failed to complete. |
 
 ### Example request
 ```bash
