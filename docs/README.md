@@ -130,9 +130,7 @@ Use `task <action>` to run predefined build actions:
 ## Starting the service
 
 > [!WARNING]
-> **Do not** run this service without a reverse proxy or API gateway in front of it. While whipcode does have a standalone mode for per IP rate limiting, it is not meant to be used in production. Use an API gateway like Kong, Tyk and WSO2 to enforce rate limits, policies and authentication. Configure your gateway to add a `X-Master-Key` header to every request with the secret defined below. **Do not** host the gateway on the same system.
->
-> **Do not** run whipcode as root, or with SELinux disabled/permissive.
+> **Do not** run this service without a reverse proxy or API gateway in front of it. While whipcode does have a standalone mode for per IP rate limiting, it is not meant to be used in production. Use an API gateway like Kong, Tyk and WSO2 to enforce rate limits, policies and authentication. Configure your gateway to add a `X-Master-Key` header to every request with the secret defined below. **Do not** host the gateway on the same system. **Do not** run whipcode as root, or with SELinux disabled/permissive.
 
 1. Save your master key's argon2 hash to *.masterkey*:
    ```bash
@@ -152,8 +150,7 @@ Use `task <action>` to run predefined build actions:
    task run -- --ping --port 6060
    ```
 
-4. Test the service:  `task test`
-
+4. Test the service:  `task test`\
    If every response has "Success!" in the `stdout` field, the service is working correctly.
 
 ## Systemd
@@ -185,8 +182,7 @@ CLI options:
   *The address of the reverse proxy or API gateway in front of whipcode. Requests not originating from this address will be rejected. (default: none)*
 
 - **--cache**\
-  *Enables an LRU cache for code executions. This will speed up responses for repeated requests. (default: false)*
-
+  *Enables an LRU cache for code executions. This will speed up responses for repeated requests. (default: false)*\
   ***Note:** The cache is not persistent and will be lost on restart. While this feature is intended to reduce server load and latency, in some situations it may end up worsening it. Memory usage will also increase.*
 
 - **--tls**\
