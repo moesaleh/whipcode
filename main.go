@@ -34,7 +34,7 @@ import (
 	"whipcode/server"
 )
 
-const VERSION = "1.2.2"
+const VERSION = "1.3.0"
 
 func main() {
 	logger := log.NewWithOptions(os.Stderr, log.Options{

@@ -17,11 +17,12 @@
 package routes
 
 type User struct {
-	Code       string     `json:"code"`
-	LanguageID LanguageID `json:"language_id"`
-	Args       string     `json:"args"`
+	Code       string `json:"code"`
+	LanguageID StrInt `json:"language_id"`
+	Args       string `json:"args"`
+	Timeout    StrInt `json:"timeout"`
 }
 
-type LanguageID struct {
+type StrInt struct {
 	value string
 }

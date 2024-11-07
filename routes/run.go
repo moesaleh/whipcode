@@ -30,7 +30,7 @@ import (
 	"whipcode/server"
 )
 
-func (l *LanguageID) UnmarshalJSON(b []byte) error {
+func (l *StrInt) UnmarshalJSON(b []byte) error {
 	var intValue int
 	if err := json.Unmarshal(b, &intValue); err == nil {
 		l.value = strconv.Itoa(intValue)
@@ -88,11 +88,18 @@ func Run(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	entry := langConfig["entry"]
-	ext := langConfig["ext"]
+	timeout := 0
+	if user.Timeout.value != "" {
+		t, err := strconv.Atoi(user.Timeout.value)
+		if err != nil {
+			server.Send(w, http.StatusBadRequest, []byte(`{"detail": "invalid value for parameter timeout, must be an integer"}`))
+			return
+		}
+		timeout = t
+	}
 
 	ex, _ := r.Context().Value(server.ExecutorContextKey).(podman.Executor)
-	status, result := ex.RunCode(string(codeBytes), entry, user.Args, ext, r.Context().Value(server.EnableCacheContextKey).(bool))
+	status, result := ex.RunCode(string(codeBytes), langConfig["entry"], user.Args, langConfig["ext"], timeout, r.Context().Value(server.EnableCacheContextKey).(bool))
 	resultBytes, _ := json.Marshal(result)
 
 	server.Send(w, status, resultBytes)

@@ -44,7 +44,7 @@ func Cleanup() {
 	}
 }
 
-func (ex *Executor) RunCode(code, entry, cArgs, ext string, enableCache bool) (int, map[string]interface{}) {
+func (ex *Executor) RunCode(code, entry, cArgs, ext string, timeout int, enableCache bool) (int, map[string]interface{}) {
 	argsSlice := strings.Fields(cArgs)
 	for i, arg := range argsSlice {
 		argsSlice[i] = "'" + strings.ReplaceAll(arg, "'", "'\\''") + "'"
@@ -70,7 +70,12 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext string, enableCache bool) (i
 	}
 	defer os.Remove(srcFilePath)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(ex.timeout)*time.Second)
+	thisTimeout := timeout
+	if timeout == 0 || timeout > ex.timeout {
+		thisTimeout = ex.timeout
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(thisTimeout)*time.Second)
 	defer cancel()
 
 	var stdout, stderr bytes.Buffer
@@ -81,7 +86,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext string, enableCache bool) (i
 		"--no-hosts",
 		"--hostname", "box" + boxID,
 		"--network", "none",
-		"--timeout", strconv.Itoa(ex.timeout + 1),
+		"--timeout", strconv.Itoa(thisTimeout + 1),
 		"--cap-drop", "ALL",
 		"--memory", "512m",
 		"--memory-reservation", "128m",

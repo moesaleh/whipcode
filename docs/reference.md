@@ -18,6 +18,9 @@ Where `MASTER_KEY` is a secret key that the api gateway or reverse proxy has to 
 - **args** [string] [optional]\
   *Compiler/interpreter args separated by spaces.*
 
+- **timeout** [integer] [optional]\
+  *Timeout in seconds for the code to run. Capped at the timeout set in whipcode's configuration*
+
 ### Response
 - **stdout** [string]\
   *All data captured from stdout.*
@@ -41,13 +44,15 @@ In the event of an error or an invalid/rejected request, the response will conta
 ```bash
 lang=2
 code='console.log("Hello world!");'
+timeout=5
 
 curl -s -X POST $ENDPOINT \
     -H 'Content-Type: application/json' \
     -H "X-Master-Key: $MASTER_KEY" \
     -d '{
         "language_id": "'$lang'",
-        "code": "'$(echo -n $code | base64)'"
+        "code": "'$(echo -n $code | base64)'",
+        "timeout": "'$timeout'"
     }' | jq
 ```
 
