@@ -57,15 +57,25 @@ To add languages, see:
 
 </details>
 
+## Table of contents
+- [Setting up](#setting-up)
+  - [Environment setup](#environment-setup)
+  - [Building](#building)
+- [Starting the service](#starting-the-service)
+- [Systemd](#systemd)
+- [Contributing](#contributing)
+- [Credits](#credits)
+- [License](#license)
+
 ## Setting up
 **Please set this up on a SELinux-enabled system.**
 
-Tested on Fedora Server 41.
+Tested on Fedora Server 41, Go 1.23
 
 ### Environment setup
 Go:
 ```bash
-# Download Go tarball
+# Download Go tarball (> 1.23)
 wget https://go.dev/dl/go1.<version>.linux-amd64.tar.gz
 
 # Clean up previous installations
@@ -162,9 +172,9 @@ Use `task <action>` to run predefined build actions:
    If every response has "Success!" in the `stdout` field, the service is working correctly.
 
 ## Systemd
-Install the systemd user service:  `task systemd-install`
+Install and enable the systemd user service:  `task systemd-install`
 
-View status/logs:
+View status or logs:
 ```bash
 task status
 task logs        # only logs from whipcode
@@ -172,8 +182,6 @@ task logs-full   # logs including podman
 ```
 
 ## CLI options
-CLI options:
-
 - **-p, --port  PORT**\
   *The port to listen on. May not always work with authbind when attempting to bind to ports < 1024. (default: 8000)*
 
@@ -208,5 +216,14 @@ CLI options:
 - **--refill  SECONDS**  (Requires --standalone)\
   *The number of seconds for each request to refill in the burst bucket. (default: 1)*
 
+## Contributing
+Please read the [contributing guidelines](/.github/CONTRIBUTING.md) before opening a pull request.
+
+## Credits
+External libraries used:
+- [BurntSushi/toml](https://github.com/BurntSushi/toml)
+- [karlseguin/ccache](https://github.com/karlseguin/ccache)
+- [charmbracelet/log](https://github.com/charmbracelet/log)
+
 ## License
-This project is licensed under the[ Apache License, Version 2.0](/LICENSE)
+This project is licensed under the [Apache License, Version 2.0](/LICENSE)
