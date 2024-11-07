@@ -1,5 +1,8 @@
 <img alt="Whipcode" src="https://github.com/user-attachments/assets/b68d8164-cbbe-45cb-9f66-43618a0e8544"><br/>
 
+<a href="https://go.dev"><img height="20px" alt="Go badge" src="https://github.com/user-attachments/assets/c5115760-24b7-4272-8b48-7b8071e5053d"></a> <a href="https://github.com/containers/podman"><img height="20px" alt="Podman badge" src="https://github.com/user-attachments/assets/89c586f0-6932-49f3-a12f-bbc9b52c2c4f"></a>
+ <a href="/LICENSE"><img height="20px" alt="Apache badge" src="https://github.com/user-attachments/assets/2c52fd74-66d1-45a4-a825-2f51c72eedf8"></a> 
+
 REST service for executing untrusted code with Podman.
 
 Implemented as a scalable stateless microservice with no user management or authentication, minimizing damage from potential zero-day breakouts.
