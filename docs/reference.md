@@ -1,12 +1,8 @@
 ## API reference
 
 ### Headers
-```
-Content-Type: application/json
-X-Master-Key: $MASTER_KEY
-```
-
-Where `MASTER_KEY` is a secret key that the api gateway or reverse proxy has to provide.
+- `Content-Type: application/json`
+- `X-Master-Key: $MASTER_KEY`
 
 ### Body
 - **code** [string]\
@@ -19,7 +15,7 @@ Where `MASTER_KEY` is a secret key that the api gateway or reverse proxy has to 
   *Compiler/interpreter args separated by spaces.*
 
 - **timeout** [integer] [optional]\
-  *Timeout in seconds for the code to run. Capped at the timeout set in whipcode's configuration*
+  *Timeout in seconds for the code to run. Capped at the timeout set in whipcode's configuration.*
 
 ### Response
 - **stdout** [string]\
