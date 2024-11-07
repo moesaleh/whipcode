@@ -35,6 +35,7 @@ Default languages:
     Dart                  25
     VB.NET                26     mono
     F#                    27     mono
+    PHP                   28
 
     To add interpreters/compilers, see:
         - scripts/images.sh

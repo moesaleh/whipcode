@@ -46,6 +46,7 @@ declare -A langs=(
     [25]='void main() { print("Success!"); }'
     [26]='Module Program\n     Sub Main()\n          Console.WriteLine("Success!")\n     End Sub\nEnd Module'
     [27]='printfn "Success!"'
+    [28]='<?php echo "Success!";'
 )
 
 for i in "${!langs[@]}"; do
