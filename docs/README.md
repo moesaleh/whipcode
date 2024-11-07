@@ -7,6 +7,10 @@ REST service for executing untrusted code with Podman.
 
 Implemented as a scalable stateless microservice with no user management or authentication, minimizing damage from potential zero-day breakouts.
 
+Don't want to self host? Head over to [whipcode.app](https://whipcode.app) to access the live endpoint.
+
+Drop us an email at [hello@whipcode.app](mailto:hello@whipcode.app) if you'd like to get in touch.
+
 [API reference](/docs/reference.md)
 
 <details>
@@ -53,7 +57,6 @@ To add languages, see:
 
 </details>
 
-
 ## Setting up
 **Please set this up on a SELinux-enabled system.**
 
@@ -65,11 +68,13 @@ Go:
 # Download Go tarball
 wget https://go.dev/dl/go1.<version>.linux-amd64.tar.gz
 
-# Clean up old installations
+# Clean up previous installations
 sudo rm -rf /usr/local/go
 
-# Install
+# Extract the tarball into /usr/local
 sudo tar -C /usr/local -xzf go1.<version>.linux-amd64.tar.gz
+
+# Add to PATH
 sudo echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile
 
 # Load new PATH
@@ -81,7 +86,7 @@ go-task:
 # Download go-task rpm
 wget https://github.com/go-task/task/releases/latest/download/task_linux_amd64.rpm
 
-# Install
+# Install the rpm
 sudo dnf install task_linux_amd64.rpm
 ```
 
