@@ -1,4 +1,5 @@
-# whipcode
+<img alt="Whipcode" src="https://github.com/user-attachments/assets/b68d8164-cbbe-45cb-9f66-43618a0e8544"><br/>
+
 REST service for executing untrusted code with Podman.
 
 Implemented as a scalable stateless microservice with no user management or authentication, minimizing damage from potential zero-day breakouts.
