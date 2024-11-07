@@ -6,6 +6,4 @@ run/
 .masterkey
 
 config.toml
-languages.toml
-
 TEMP_CONTAINERFILE

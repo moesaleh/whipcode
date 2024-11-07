@@ -45,7 +45,7 @@ To add languages, see:
 - [scripts/images.sh](/scripts/images.sh)
 - [scripts/extra_setup/](/scripts/extra_setup/)
 - [entry/](/entry/)
-- [languages.toml](/languages.default.toml)
+- [languages.toml](/languages.toml)
 - [scripts/tests.sh](/scripts/tests.sh)
 
 </details>
@@ -139,7 +139,7 @@ Use `task <action>` to run predefined build actions:
    task key -- <KEY>
    ```
 
-2. Copy the configuration templates:  `task config-init`
+2. Copy the configuration template:  `task config-init`
 
 3. Run the service:
    ```bash
