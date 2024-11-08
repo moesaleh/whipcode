@@ -128,7 +128,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext string, timeout int, enableC
 
 	stdoutStr := stdout.String()
 	stderrStr := stderr.String()
-	if !(strings.HasPrefix(stdoutStr, "stdout-start")) || !(strings.HasPrefix(stderrStr, "stderr-start")) {
+	if !strings.HasPrefix(stdoutStr, "stdout-start") || !strings.HasPrefix(stderrStr, "stderr-start") {
 		log.Warn("Caught unsafe output", "STDOUT", stdoutStr, "STDERR", stderrStr)
 		return http.StatusInternalServerError, map[string]interface{}{
 			"detail": "internal server error",
