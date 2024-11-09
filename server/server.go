@@ -24,7 +24,7 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func StartServer(port int, handler http.Handler, enableTLS bool, tlsDir string) {
+func StartServer(port int, handler http.Handler, enableTLS bool, tlsDir string, timeout int) {
 	log.Info("Starting whipcode", "Port", port, "TLS", enableTLS)
 
 	addr := fmt.Sprintf(":%d", port)
@@ -32,8 +32,8 @@ func StartServer(port int, handler http.Handler, enableTLS bool, tlsDir string) 
 		Addr:         addr,
 		Handler:      handler,
 		ReadTimeout:  20 * time.Second,
-		WriteTimeout: 20 * time.Second,
-		IdleTimeout:  90 * time.Second,
+		WriteTimeout: (time.Duration(timeout) + 10) * time.Second,
+		IdleTimeout:  20 * time.Second,
 	}
 
 	var Serve = srv.ListenAndServe

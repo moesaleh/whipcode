@@ -151,5 +151,5 @@ func main() {
 	}
 
 	handler := server.MiddleWare(http.DefaultServeMux, params)
-	server.StartServer(port, handler, enableTLS, tlsDir)
+	server.StartServer(port, handler, enableTLS, tlsDir, timeout)
 }
