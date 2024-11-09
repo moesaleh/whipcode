@@ -18,10 +18,13 @@ package config
 
 type Config struct {
 	Port       int
-	Max        int
+	MaxBytes   int
 	Proxy      string
 	TLS        bool
+	TLSDir     string
 	Ping       bool
+	LangMap    string
+	PodmanPath string
 	Timeout    int
 	Key        string
 	Cache      bool

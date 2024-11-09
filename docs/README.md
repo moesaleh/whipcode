@@ -1,7 +1,7 @@
 <img alt="Whipcode" src="https://github.com/user-attachments/assets/b68d8164-cbbe-45cb-9f66-43618a0e8544"><br/>
 
 <a href="https://go.dev"><img height="20px" alt="Go badge" src="https://github.com/user-attachments/assets/c5115760-24b7-4272-8b48-7b8071e5053d"></a> <a href="https://github.com/containers/podman"><img height="20px" alt="Podman badge" src="https://github.com/user-attachments/assets/89c586f0-6932-49f3-a12f-bbc9b52c2c4f"></a>
- <a href="/LICENSE"><img height="20px" alt="Apache badge" src="https://github.com/user-attachments/assets/2c52fd74-66d1-45a4-a825-2f51c72eedf8"></a> 
+ <a href="/LICENSE"><img height="20px" alt="Apache badge" src="https://github.com/user-attachments/assets/2c52fd74-66d1-45a4-a825-2f51c72eedf8"></a>
 
 REST API for executing untrusted code with Podman.
 
@@ -188,6 +188,9 @@ task logs-full   # logs including podman
 ```
 
 ## CLI options
+> [!NOTE]
+> The default values are not hardcoded, but specified in the [configuration file](/config.default.toml).
+
 - **-p, --port  PORT**\
   *The port to listen on. May not always work with authbind when attempting to bind to ports < 1024. (default: 8000)*
 
@@ -200,6 +203,12 @@ task logs-full   # logs including podman
 - **-k, --key  FILE**\
   *Path to the file containing the master key's argon2 hash and salt. (default: .masterkey)*
 
+- **--lang-map  FILE**\
+  *Path to the file containing the language map. (default: langmap.toml)*
+
+- **--podman**  PATH\
+  *Path to the podman binary. (default: /usr/bin/podman)*
+
 - **--proxy  ADDR**\
   *The address of the reverse proxy or API gateway in front of whipcode. Requests not originating from this address will be rejected. (default: none)*
 
@@ -208,7 +217,10 @@ task logs-full   # logs including podman
   ***Note:** The cache is not persistent and will be lost on restart. While this feature is intended to reduce server load and latency, in some situations it may end up worsening it. Memory usage will also increase.*
 
 - **--tls**\
-  *Enables TLS. Requires tls/cert.pem and tls/key.pem to be present.*
+  *Enables TLS.*
+
+- **--tls-dir  DIR**\
+  *The directory containing cert.pem and key.pem. (default: tls)*
 
 - **--ping**\
   *Enables the /ping endpoint. Replies with "pong".*
@@ -289,4 +301,4 @@ External libraries used:
 - [charmbracelet/log](https://github.com/charmbracelet/log)
 
 ## License
-This project is licensed under the [Apache License, Version 2.0](/LICENSE)
+This project is licensed under the [Apache License, Version 2.0](/LICENSE).

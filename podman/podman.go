@@ -33,9 +33,9 @@ import (
 	"github.com/karlseguin/ccache/v3"
 )
 
-func NewExecutor(timeout int) *Executor {
+func NewExecutor(timeout int, podmanPath string) *Executor {
 	cache := ccache.New(ccache.Configure[map[string]interface{}]().MaxSize(100).ItemsToPrune(10))
-	return &Executor{execCache: cache, timeout: timeout}
+	return &Executor{execCache: cache, timeout: timeout, podmanPath: podmanPath}
 }
 
 func Cleanup() {
@@ -103,7 +103,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext string, timeout int, enableC
 		"--volume", fmt.Sprintf("./run/%s:/source.%s:Z,ro", srcFileName, ext),
 		"whipcode-" + entry, "sh", "-c", "echo stdout-start && echo stderr-start >&2 && sh ./entry.sh " + cArgs,
 	}
-	cmdExec := exec.CommandContext(ctx, "/usr/bin/podman", args...)
+	cmdExec := exec.CommandContext(ctx, ex.podmanPath, args...)
 	cmdExec.Stdout = &stdout
 	cmdExec.Stderr = &stderr
 

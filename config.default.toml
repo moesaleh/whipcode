@@ -8,16 +8,18 @@ port = 8000
 
 # The maximum size of the request body in bytes. Requests
 # larger than this will be rejected.
-max = 1000000
+maxBytes = 1000000
 
 # The address of the reverse proxy or API gateway in front
 # of whipcode. Requests not originating from this address
 # will be rejected.
 proxy = ""
 
-# Enables TLS. Requires tls/cert.pem and tls/key.pem to be
-# present.
+# Enables TLS.
 tls = false
+
+# Directory containing cert.pem and key.pem for TLS.
+tlsDir = "tls"
 
 # Enables the /ping endpoint. Replies with "pong".
 ping = false
@@ -26,6 +28,13 @@ ping = false
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                    EXECUTION OPTIONS                    #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Language map file. This file maps file extensions to th
+# appropriate container images and entrypoints.
+langMap = "langmap.toml"
+
+# Path to the podman binary.
+podmanPath = "/usr/bin/podman"
 
 # The maximum time allowed for code execution. Should be
 # set lower than the server's write timeout, which is 20

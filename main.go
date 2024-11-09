@@ -34,7 +34,7 @@ import (
 	"whipcode/server"
 )
 
-const VERSION = "1.3.0"
+const VERSION = "1.4.0"
 
 func main() {
 	logger := log.NewWithOptions(os.Stderr, log.Options{
@@ -47,38 +47,45 @@ func main() {
 
 	var version, enableTLS, enableCache, enablePing, standalone bool
 	var port, maxBytesSize, rlBurst, rlRefill, timeout int
-	var keyFile, proxy string
+	var keyFile, proxy, podmanPath, tlsDir, langMap string
 
 	flag.Usage = func() {
-		fmt.Printf("usage: %s [options]\n", os.Args[0])
+		fmt.Printf("usage: %s [options]\n\n", os.Args[0])
 		fmt.Println(`options:
-    -h, --help              print this help message
-    -v, --version           print version information
-    -p, --port     PORT     port to listen on (default: 8000)
-    -m, --max      BYTES    max bytes to accept (default: 1000000)
-    -t, --timeout  SECONDS  timeout for execution (default: 10)
-    -k, --key      FILE     master key file (default: .masterkey)
-    --proxy        ADDR     reverse proxy address (default: none)
-    --cache                 enable execution cache
-    --tls                   enable tls
-    --ping                  enable /ping endpoint
-    --standalone            enable rate limiting (CHECK README)
-    --burst        COUNT    rate limit burst (default: 3)
-    --refill	   SECONDS  rate limit refill time (default: 1)`)
+    -h, --help                print this help message
+    -v, --version             print version information
+    -p, --port       PORT     port to listen on
+    -m, --max-bytes  BYTES    max bytes to accept
+    -t, --timeout    SECONDS  timeout for execution
+    -k, --key        FILE     master key file
+    --lang-map       FILE     language map file
+    --podman-path    PATH     path to podman
+    --proxy          ADDR     reverse proxy address
+    --cache                   enable execution cache
+    --tls                     enable tls
+    --tls-dir        DIR      directory with cert and key
+    --ping                    enable /ping endpoint
+    --standalone              enable rate limiting (CHECK README)
+    --burst          COUNT    rate limit burst
+    --refill	     SECONDS  rate limit refill time`)
+		fmt.Println("\nsee config.toml for default values")
 	}
 	flag.BoolVar(&version, "version", false, "")
 	flag.BoolVar(&version, "v", false, "")
 	flag.IntVar(&port, "port", fileConfig.Port, "")
 	flag.IntVar(&port, "p", fileConfig.Port, "")
-	flag.IntVar(&maxBytesSize, "max", fileConfig.Max, "")
-	flag.IntVar(&maxBytesSize, "m", fileConfig.Max, "")
+	flag.IntVar(&maxBytesSize, "max-bytes", fileConfig.MaxBytes, "")
+	flag.IntVar(&maxBytesSize, "m", fileConfig.MaxBytes, "")
 	flag.IntVar(&timeout, "timeout", fileConfig.Timeout, "")
 	flag.IntVar(&timeout, "t", fileConfig.Timeout, "")
 	flag.StringVar(&keyFile, "key", fileConfig.Key, "")
 	flag.StringVar(&keyFile, "k", fileConfig.Key, "")
+	flag.StringVar(&langMap, "lang-map", fileConfig.LangMap, "")
+	flag.StringVar(&podmanPath, "podman-path", fileConfig.PodmanPath, "")
 	flag.StringVar(&proxy, "proxy", fileConfig.Proxy, "")
 	flag.BoolVar(&enableCache, "cache", fileConfig.Cache, "")
 	flag.BoolVar(&enableTLS, "tls", fileConfig.TLS, "")
+	flag.StringVar(&tlsDir, "tls-dir", fileConfig.TLSDir, "")
 	flag.BoolVar(&enablePing, "ping", fileConfig.Ping, "")
 	flag.BoolVar(&standalone, "standalone", fileConfig.Standalone, "")
 	flag.IntVar(&rlBurst, "burst", fileConfig.Burst, "")
@@ -90,8 +97,8 @@ func main() {
 		return
 	}
 
-	if _, err := os.Stat("/usr/bin/podman"); os.IsNotExist(err) {
-		log.Fatal("/usr/bin/podman not found")
+	if _, err := os.Stat(podmanPath); os.IsNotExist(err) {
+		log.Fatal("Podman binary not found", "Error", err)
 	}
 
 	if err := os.MkdirAll(filepath.Join(".", "run"), 0755); err != nil {
@@ -109,12 +116,12 @@ func main() {
 	keyStore, keyAndSalt := control.InitializeKeystore(keyFile)
 
 	scopedParams := server.ScopedMiddleWareParams{
-		LangMap:      *config.LoadLangs("languages.toml"),
+		LangMap:      *config.LoadLangs(langMap),
 		EnableCache:  enableCache,
 		KeyAndSalt:   keyAndSalt,
 		KeyStore:     keyStore,
 		MaxBytesSize: maxBytesSize,
-		Executor:     *podman.NewExecutor(timeout),
+		Executor:     *podman.NewExecutor(timeout, podmanPath),
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
@@ -144,5 +151,5 @@ func main() {
 	}
 
 	handler := server.MiddleWare(http.DefaultServeMux, params)
-	server.StartServer(port, handler, enableTLS)
+	server.StartServer(port, handler, enableTLS, tlsDir)
 }

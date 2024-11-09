@@ -21,6 +21,7 @@ import (
 )
 
 type Executor struct {
-	timeout   int
-	execCache *ccache.Cache[map[string]interface{}]
+	timeout    int
+	podmanPath string
+	execCache  *ccache.Cache[map[string]interface{}]
 }

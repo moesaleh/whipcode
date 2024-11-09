@@ -1,3 +1,7 @@
+# [index]
+# entry = <language>
+# ext = <extension>
+
 [1]
 entry = "python"
 ext = "py"
