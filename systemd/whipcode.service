@@ -3,7 +3,6 @@ Description=Whipcode API
 After=network.target
 AssertSecurity=selinux
 AssertPathExists=/path/to/whipcode/config.toml
-AssertPathExists=/path/to/whipcode/languages.toml
 
 [Service]
 Type=exec
