@@ -5,11 +5,11 @@
 
 REST API for executing untrusted code with Podman.
 
-Implemented as a stateless microservice with no user management, minimizing damage from potential zero-day breakouts.
+Implemented as a scalable, stateless microservice with no user management or authentication.
 
-Don't want to self host? Head over to [whipcode.app](https://whipcode.app) to access the live endpoint.
-
-Drop us an email at [hello@whipcode.app](mailto:hello@whipcode.app) if you'd like to get in touch.
+> Don't want to self host? Head over to [whipcode.app](https://whipcode.app) to access the live endpoint.
+>
+> Drop us an email at [hello@whipcode.app](mailto:hello@whipcode.app) if you'd like to get in touch.
 
 <details>
   <summary>Click to see default languages</summary>
@@ -246,9 +246,9 @@ task logs-full   # logs including podman
 | Name          | Required | Type                 | Description                                                                                    |
 | ------------- | -------- | -------------------- | ---------------------------------------------------------------------------------------------- |
 | `code`        | yes      | `string`             | The source code, base64 encoded.                                                               |
-| `language_id` | yes      | `integer` / `string` | Language ID of the submitted code.                                                             |
+| `language_id` | yes      | `integer` `string`   | Language ID of the submitted code.                                                             |
 | `args`        | no       | `string`             | Compiler/interpreter args separated by spaces.                                                 |
-| `timeout`     | no       | `integer` / `string` | Timeout in seconds for the code to run. Capped at the timeout set in whipcode's configuration. |
+| `timeout`     | no       | `integer` `string`   | Timeout in seconds for the code to run. Capped at the timeout set in whipcode's configuration. |
 
 ### Response
 `200`
@@ -292,7 +292,7 @@ curl -s -X POST $ENDPOINT \
 ```
 
 ## Contributing
-Please read the [contributing guidelines](/.github/CONTRIBUTING.md) before opening a pull request.
+Please read the [Contributing Guidelines](/.github/CONTRIBUTING.md) and [Code of Conduct](/.github/CODE_OF_CONDUCT) before opening a pull request.
 
 ## Credits
 External libraries used:
