@@ -292,7 +292,7 @@ curl -s -X POST $ENDPOINT \
 ```
 
 ## Contributing
-Please read the [Contributing Guidelines](/.github/CONTRIBUTING.md) and [Code of Conduct](/.github/CODE_OF_CONDUCT) before opening a pull request.
+Please read the [Contributing Guidelines](/.github/CONTRIBUTING.md) and [Code of Conduct](/.github/CODE_OF_CONDUCT.md) before opening a pull request.
 
 ## Credits
 External libraries used:
