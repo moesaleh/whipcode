@@ -85,7 +85,7 @@ func SelfTest() {
 
 	var tests Tests
 
-	if _, err := toml.DecodeFile("tests.toml", &tests); err != nil {
+	if _, err := toml.DecodeFile("tests/tests.toml", &tests); err != nil {
 		color.Red("Could not load test configuration: %v", err)
 		os.Exit(1)
 	}
@@ -108,6 +108,7 @@ func SelfTest() {
 			color.Red("Error creating request for language %s: %v", id, err)
 			continue
 		}
+
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("X-Master-Key", key)
 
