@@ -14,7 +14,7 @@
 //  language governing permissions and limitations under the License.
 //
 
-package util
+package utils
 
 import (
 	"crypto/rand"
@@ -68,7 +68,7 @@ func GenKey() {
 	if key == "" {
 		key = RandomString(32)
 		fmt.Println("This is your master key:", key)
-		fmt.Println("It won't be shown again, if you lose it you'll have to generate a new one.")
+		fmt.Println("It won't be shown again, so make sure to save it somewhere safe.")
 	}
 
 	hash := argon2.IDKey([]byte(key), []byte(salt), 1, 4096, 1, 32)

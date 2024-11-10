@@ -1,0 +1,185 @@
+[1]
+test = '''
+print("Success!")
+'''
+
+[2]
+test = '''
+console.log("Success!");
+'''
+
+[3]
+test = '''
+echo "Success!"
+'''
+
+[4]
+test = '''
+print "Success!";
+'''
+
+[5]
+test = '''
+print("Success!")
+'''
+
+[6]
+test = '''
+puts "Success!"
+'''
+
+[7]
+test = '''
+#include <stdio.h>
+int main() {
+   printf("Success!");
+   return 0;
+}
+'''
+
+[8]
+test = '''
+#include <iostream>
+int main() {
+   std::cout << "Success!";
+   return 0;
+}
+'''
+
+[9]
+test = '''
+fn main() {
+    println!("Success!");
+}
+'''
+
+[10]
+test = '''
+program hello
+ print *, "Success!"
+end program hello
+'''
+
+[11]
+test = '''
+main = putStrLn "Success!"
+'''
+
+[12]
+test = '''
+public class HelloWorld {
+   public static void main(String[] args) {
+       System.out.println("Success!");
+   }
+}
+'''
+
+[13]
+test = '''
+package main
+import "fmt"
+func main() {
+  fmt.Println("Success!")
+}
+'''
+
+[14]
+test = '''
+let message: string = "Success!";
+console.log(message);
+'''
+
+[15]
+test = '''
+(write-line "Success!")
+'''
+
+[16]
+test = '''
+#lang racket
+"Success!"
+'''
+
+[17]
+test = '''
+puts "Success!"
+'''
+
+[18]
+test = '''
+(println "Success!")
+'''
+
+[19]
+test = '''
+section .text
+global _start
+_start:
+   mov edx, len
+   mov ecx, msg
+   mov ebx, 1
+   mov eax, 4
+   int 0x80
+   mov eax, 1
+   int 0x80
+section .data
+msg db "Success!", 0xa
+len equ $ - msg
+'''
+
+[20]
+test = '''
+const std = @import("std");
+pub fn main() !void {
+   std.io.getStdOut().writeAll("Success!") catch unreachable;
+}
+'''
+
+[21]
+test = '''
+echo "Success!"
+'''
+
+[22]
+test = '''
+import std.stdio;
+void main() {
+   writeln("Success!");
+}
+'''
+
+[23]
+test = '''
+Console.WriteLine("Success!");
+'''
+
+[24]
+test = '''
+print("Success!")
+'''
+
+[25]
+test = '''
+void main() {
+   print("Success!");
+}
+'''
+
+[26]
+test = '''
+Module Program
+    Sub Main()
+         Console.WriteLine("Success!")
+    End Sub
+End Module
+'''
+
+[27]
+test = '''
+printfn "Success!"
+'''
+
+[28]
+test = '''
+<?php echo "Success!";
+'''

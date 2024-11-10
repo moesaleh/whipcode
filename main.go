@@ -32,10 +32,10 @@ import (
 	"whipcode/podman"
 	"whipcode/routes"
 	"whipcode/server"
-	"whipcode/util"
+	"whipcode/utils"
 )
 
-const VERSION = "1.5.0"
+const VERSION = "1.5.1"
 
 func main() {
 	logger := log.NewWithOptions(os.Stderr, log.Options{
@@ -106,11 +106,11 @@ options:
 		return
 
 	case genKey:
-		util.GenKey()
+		utils.GenKey()
 		return
 
 	case selfTest:
-		util.SelfTest()
+		utils.SelfTest()
 		return
 	}
 

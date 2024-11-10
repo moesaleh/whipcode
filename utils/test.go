@@ -14,7 +14,7 @@
 //  language governing permissions and limitations under the License.
 //
 
-package util
+package utils
 
 import (
 	"bytes"
@@ -26,6 +26,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/BurntSushi/toml"
 	"github.com/charmbracelet/huh"
 	"github.com/fatih/color"
 )
@@ -78,22 +79,29 @@ func SelfTest() {
 		return
 	}
 
-	for id, code := range Tests {
-		payload := map[string]string{
-			"language_id": fmt.Sprintf("%d", id),
-			"code":        base64.StdEncoding.EncodeToString([]byte(code)),
+	var tests Tests
+
+	if _, err := toml.DecodeFile("tests.toml", &tests); err != nil {
+		color.Red("Could not load test configuration: %v", err)
+		return
+	}
+
+	for id, code := range tests {
+		payload := Payload{
+			"language_id": id,
+			"code":        base64.StdEncoding.EncodeToString([]byte(code.Test)),
 		}
 
 		jsonData, err := json.Marshal(payload)
 		if err != nil {
-			color.Red("Error encoding JSON for language %d: %v", id, err)
+			color.Red("Error encoding JSON for language %s: %v", id, err)
 			continue
 		}
 
 		url := fmt.Sprintf("http://0.0.0.0:%s/run", port)
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		if err != nil {
-			color.Red("Error creating request for language %d: %v", id, err)
+			color.Red("Error creating request for language %s: %v", id, err)
 			continue
 		}
 		req.Header.Set("Content-Type", "application/json")
@@ -102,7 +110,7 @@ func SelfTest() {
 		client := &http.Client{}
 		resp, err := client.Do(req)
 		if err != nil {
-			color.Red("Error sending request for language %d: %v", id, err)
+			color.Red("Error sending request for language %s: %v", id, err)
 			continue
 		}
 		defer resp.Body.Close()
@@ -117,6 +125,6 @@ func SelfTest() {
 			Print = color.Green
 		}
 
-		Print("%d %s", id, responseBody)
+		Print("%s %s", id, responseBody)
 	}
 }

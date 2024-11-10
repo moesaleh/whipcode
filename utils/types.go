@@ -14,27 +14,12 @@
 //  language governing permissions and limitations under the License.
 //
 
-package config
+package utils
 
-import (
-	"whipcode/server"
-
-	"github.com/BurntSushi/toml"
-	"github.com/charmbracelet/log"
-)
-
-func LoadConfig(path string) *Config {
-	var config Config
-	if _, err := toml.DecodeFile(path, &config); err != nil {
-		log.Fatal("Could not load config", "File", path, "Error", err)
-	}
-	return &config
+type Test struct {
+	Test string `toml:"test"`
 }
 
-func LoadLangs(path string) *server.LangMap {
-	var langs server.LangMap
-	if _, err := toml.DecodeFile(path, &langs); err != nil {
-		log.Fatal("Could not load language map", "File", path, "Error", err)
-	}
-	return &langs
-}
+type Tests map[string]Test
+
+type Payload map[string]string
