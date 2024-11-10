@@ -51,7 +51,7 @@ To add languages, see:
 - [images/extra_setup/](/images/extra_setup/)
 - [entry/](/entry/)
 - [langmap.toml](/langmap.toml)
-- [util/tests.go](/util/tests.go)
+- [tests.toml](/tests.toml)
 
 </details>
 
