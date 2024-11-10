@@ -27,16 +27,10 @@ import (
 	"github.com/fatih/color"
 )
 
-const (
-	HEADER = "FROM docker.io/alpine:latest"
-	PREFIX = "RUN apk update --no-cache && apk upgrade --no-cache && apk add --no-cache libc-dev musl-dev "
-	SUFFIX = "apk --purge del apk-tools && rm -rf /var/cache/apk /var/lib/apk /lib/apk /etc/apk /sbin/apk /usr/share/apk /usr/lib/apk /usr/sbin/apk /usr/local/apk /usr/bin/apk /usr/local/bin/apk /usr/local/sbin/apk /usr/local/lib/apk /usr/local/share/apk /usr/local/libexec/apk /usr/local/etc/apk"
-)
-
 func ContainerFile(lang, setup string) string {
-	header := HEADER
-	prefix := PREFIX
-	suffix := SUFFIX
+	header := "FROM docker.io/alpine:latest"
+	prefix := "RUN apk update --no-cache && apk upgrade --no-cache && apk add --no-cache libc-dev musl-dev "
+	suffix := "apk --purge del apk-tools && rm -rf /var/cache/apk /var/lib/apk /lib/apk /etc/apk /sbin/apk /usr/share/apk /usr/lib/apk /usr/sbin/apk /usr/local/apk /usr/bin/apk /usr/local/bin/apk /usr/local/sbin/apk /usr/local/lib/apk /usr/local/share/apk /usr/local/libexec/apk /usr/local/etc/apk"
 
 	setupScript := fmt.Sprintf("images/extra_setup/%s.sh", strings.ToLower(lang))
 	if _, err := os.Stat(setupScript); err == nil {
