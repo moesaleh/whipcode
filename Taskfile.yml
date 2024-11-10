@@ -13,7 +13,7 @@ tasks:
 
   build-images:
     cmds:
-      - bash scripts/images.sh
+      - bash images/build.sh
 
   rebuild-images:
     cmds:
@@ -42,11 +42,11 @@ tasks:
 
   key:
     cmds:
-      - echo -n "{{.CLI_ARGS}}" | bash scripts/masterkey.sh
+      - ./bin/whipcode --gen-key
 
   test:
     cmds:
-      - bash scripts/tests.sh
+      - ./bin/whipcode --self-test
 
   systemd-install:
     cmds:

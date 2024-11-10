@@ -32,9 +32,10 @@ import (
 	"whipcode/podman"
 	"whipcode/routes"
 	"whipcode/server"
+	"whipcode/util"
 )
 
-const VERSION = "1.4.1"
+const VERSION = "1.5.0"
 
 func main() {
 	logger := log.NewWithOptions(os.Stderr, log.Options{
@@ -45,13 +46,18 @@ func main() {
 
 	fileConfig := config.LoadConfig("config.toml")
 
-	var version, enableTLS, enableCache, enablePing, standalone bool
+	var version, enableTLS, enableCache, enablePing, standalone, genKey, selfTest bool
 	var port, maxBytesSize, rlBurst, rlRefill, timeout int
 	var keyFile, proxy, podmanPath, tlsDir, langMap string
 
 	flag.Usage = func() {
-		fmt.Printf("usage: %s [options]\n\n", os.Args[0])
-		fmt.Println(`options:
+		fmt.Printf("usage: %s [options]\n", os.Args[0])
+		fmt.Println(`
+commands:
+    --gen-key                 generate a master key
+    --self-test               run self test`)
+		fmt.Println(`
+options:
     -h, --help                print this help message
     -v, --version             print version information
     -p, --port       PORT     port to listen on
@@ -70,6 +76,8 @@ func main() {
     --refill	     SECONDS  rate limit refill time`)
 		fmt.Println("\nsee config.toml for default values")
 	}
+	flag.BoolVar(&genKey, "gen-key", false, "")
+	flag.BoolVar(&selfTest, "self-test", false, "")
 	flag.BoolVar(&version, "version", false, "")
 	flag.BoolVar(&version, "v", false, "")
 	flag.IntVar(&port, "port", fileConfig.Port, "")
@@ -92,8 +100,17 @@ func main() {
 	flag.IntVar(&rlRefill, "refill", fileConfig.Refill, "")
 	flag.Parse()
 
-	if version {
+	switch {
+	case version:
 		fmt.Println(VERSION)
+		return
+
+	case genKey:
+		util.GenKey()
+		return
+
+	case selfTest:
+		util.SelfTest()
 		return
 	}
 

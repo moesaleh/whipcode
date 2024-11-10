@@ -47,11 +47,11 @@ Implemented as a scalable, stateless microservice with no user management or aut
 | 28  | PHP            | -             |
 
 To add languages, see:
-- [scripts/images.sh](/scripts/images.sh)
-- [scripts/extra_setup/](/scripts/extra_setup/)
+- [images/build.sh](/images/build.sh)
+- [images/extra_setup/](/images/extra_setup/)
 - [entry/](/entry/)
-- [languages.toml](/languages.toml)
-- [scripts/tests.sh](/scripts/tests.sh)
+- [langmap.toml](/langmap.toml)
+- [util/tests.go](/util/tests.go)
 
 </details>
 
@@ -155,12 +155,7 @@ Use `task <action>` to run predefined build actions:
 > [!WARNING]
 > **Do not** run whipcode without a reverse proxy or API gateway in front of it. While there is a standalone mode for per IP rate limiting, it is not meant to be used in production. Use an API gateway like Kong, Tyk and WSO2 to enforce rate limits, policies and authentication. Configure your gateway to add a `X-Master-Key` header to every request with the secret defined below. **Do not** host the gateway on the same system. **Do not** run whipcode as root, or with SELinux disabled/permissive.
 
-1. Save your master key's argon2 hash to *.masterkey*:
-   ```bash
-   # We don't want the shell storing the key
-   export HISTFILE=/dev/null
-   task key -- <KEY>
-   ```
+1. Save your master key's argon2 hash to *.masterkey*:  `task key`
 
 2. Copy the configuration template:  `task config-init`
 
@@ -299,6 +294,7 @@ External libraries used:
 - [BurntSushi/toml](https://github.com/BurntSushi/toml)
 - [karlseguin/ccache](https://github.com/karlseguin/ccache)
 - [charmbracelet/log](https://github.com/charmbracelet/log)
+- [charmbracelet/huh](https://github.com/charmbracelet/huh)
 
 ## License
 This project is licensed under the [Apache License, Version 2.0](/LICENSE).

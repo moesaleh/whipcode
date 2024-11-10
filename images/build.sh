@@ -21,7 +21,7 @@ then
     exit 1
 fi
 
-if [ ! -d scripts/extra_setup ]; then
+if [ ! -d images/extra_setup ]; then
     echo "Run this script from the root of the repository."
     exit 1
 fi
@@ -71,8 +71,8 @@ for lang in "${!langs[@]}"; do
     header=${HEADER}
     suffix=${SUFFIX}
     prefix=${PREFIX}
-    if [ -f scripts/extra_setup/${lang,,}.sh ]; then
-        header+="\nCOPY scripts/extra_setup/${lang,,}.sh /tmp/setup.sh\n"
+    if [ -f images/extra_setup/${lang,,}.sh ]; then
+        header+="\nCOPY images/extra_setup/${lang,,}.sh /tmp/setup.sh\n"
         suffix="sh /tmp/setup.sh && rm -f /tmp/setup.sh && ${suffix}"
     fi
     langs["$lang"]=$(echo -e "${header}\n${prefix}${langs[$lang]} && ${suffix}")
