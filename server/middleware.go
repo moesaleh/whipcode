@@ -46,7 +46,7 @@ func ScopedMiddleware(f http.HandlerFunc, params ScopedMiddlewareParams) http.Ha
 	/**
 	 * @param w http.ResponseWriter Response writer
 	 * @param r *http.Request Request object
-     */
+	 */
 	return func(w http.ResponseWriter, r *http.Request) {
 		r.Body = http.MaxBytesReader(w, r.Body, int64(params.MaxBytesSize))
 
