@@ -13,7 +13,7 @@ tasks:
 
   build-images:
     cmds:
-      - bash images/build.sh
+      - ./bin/whipcode --build-images
 
   rebuild-images:
     cmds:

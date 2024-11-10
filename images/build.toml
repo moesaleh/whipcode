@@ -1,0 +1,86 @@
+# [language]
+# setup = apk add... "<package>"
+
+[bash]
+setup = "bash"
+
+[nodejs]
+setup = "nodejs"
+
+[c]
+setup = "gcc"
+
+[cpp]
+setup = "g++"
+
+[fortran]
+setup = "gfortran"
+
+[go]
+setup = "gcc-go"
+
+[haskell]
+setup = "ghc"
+
+[java]
+setup = "openjdk21"
+
+[lua]
+setup = "lua"
+
+[perl]
+setup = "perl"
+
+[python]
+setup = "python3"
+
+[ruby]
+setup = "ruby"
+
+[rust]
+setup = "rust"
+
+[typescript]
+setup = "npm"
+
+[clisp]
+setup = "sbcl"
+
+[racket]
+setup = "racket"
+
+[crystal]
+setup = "crystal"
+
+[clojure]
+setup = "clojure"
+
+[nasm]
+setup = "nasm binutils"
+
+[zig]
+setup = "zig"
+
+[nim]
+setup = "nim gcc"
+
+[d]
+setup = "gcc-gdc"
+
+[csharp]
+setup = "wget && apk add mono --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing"
+
+[rscript]
+setup = "R"
+
+[dart]
+setup = "&& apk add dart --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing"
+
+[vb]
+setup = "&& apk add mono --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing"
+
+[fsharp]
+setup = "&& apk add mono --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing"
+
+[php]
+setup = "php"

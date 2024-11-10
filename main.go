@@ -27,6 +27,7 @@ import (
 
 	"github.com/charmbracelet/log"
 
+	"whipcode/build"
 	"whipcode/config"
 	"whipcode/control"
 	"whipcode/podman"
@@ -46,7 +47,7 @@ func main() {
 
 	fileConfig := config.LoadConfig("config.toml")
 
-	var version, enableTLS, enableCache, enablePing, standalone, genKey, selfTest bool
+	var version, enableTLS, enableCache, enablePing, standalone, genKey, selfTest, buildImages bool
 	var port, maxBytesSize, rlBurst, rlRefill, timeout int
 	var keyFile, proxy, podmanPath, tlsDir, langMap string
 
@@ -55,7 +56,8 @@ func main() {
 		fmt.Println(`
 commands:
     --gen-key                 generate a master key
-    --self-test               run self test`)
+    --self-test               run self test
+    --build-images            build images`)
 		fmt.Println(`
 options:
     -h, --help                print this help message
@@ -78,6 +80,7 @@ options:
 	}
 	flag.BoolVar(&genKey, "gen-key", false, "")
 	flag.BoolVar(&selfTest, "self-test", false, "")
+	flag.BoolVar(&buildImages, "build-images", false, "")
 	flag.BoolVar(&version, "version", false, "")
 	flag.BoolVar(&version, "v", false, "")
 	flag.IntVar(&port, "port", fileConfig.Port, "")
@@ -111,6 +114,10 @@ options:
 
 	case selfTest:
 		utils.SelfTest()
+		return
+
+	case buildImages:
+		build.BuildImages()
 		return
 	}
 

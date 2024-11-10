@@ -21,6 +21,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/charmbracelet/huh"
 	"github.com/fatih/color"
@@ -36,7 +37,7 @@ func RandomString(length int) string {
 	return hex.EncodeToString(bytes)
 }
 
-func GenKey() {
+func KeyForm() (string, string) {
 	var salt string
 	var key string
 
@@ -60,6 +61,12 @@ func GenKey() {
 		color.Red("Could not generate key: %v", err)
 		os.Exit(1)
 	}
+
+	return strings.TrimSpace(salt), strings.TrimSpace(key)
+}
+
+func GenKey() {
+	salt, key := KeyForm()
 
 	if salt == "" {
 		salt = RandomString(16)

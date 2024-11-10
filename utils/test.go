@@ -31,7 +31,7 @@ import (
 	"github.com/fatih/color"
 )
 
-func SelfTest() {
+func TestForm() (string, string) {
 	var key string
 	var port string
 
@@ -39,7 +39,13 @@ func SelfTest() {
 		huh.NewGroup(
 			huh.NewInput().
 				Title("Master key").
-				Value(&key),
+				Value(&key).
+				Validate(func(s string) error {
+					if s == "" {
+						return fmt.Errorf("Master key is required")
+					}
+					return nil
+				}),
 			huh.NewInput().
 				Title("Port").
 				Placeholder("8000").
@@ -63,27 +69,25 @@ func SelfTest() {
 		if err == huh.ErrUserAborted {
 			os.Exit(0)
 		}
-		color.Red("Could not run self-test: %v", err)
+		color.Red("Could not run test: %v", err)
 		os.Exit(1)
 	}
 
-	key = strings.TrimSpace(key)
-	port = strings.TrimSpace(port)
+	return strings.TrimSpace(key), strings.TrimSpace(port)
+}
+
+func SelfTest() {
+	key, port := TestForm()
 
 	if port == "" {
 		port = "8000"
-	}
-
-	if key == "" {
-		color.Red("Master key is required")
-		return
 	}
 
 	var tests Tests
 
 	if _, err := toml.DecodeFile("tests.toml", &tests); err != nil {
 		color.Red("Could not load test configuration: %v", err)
-		return
+		os.Exit(1)
 	}
 
 	for id, code := range tests {
