@@ -186,10 +186,13 @@ task logs-full   # logs including podman
 > [!NOTE]
 > The default values are not hardcoded, but specified in the [configuration file](/config.default.toml).
 
+- **-a, --addr ADDR**\
+  *The address to listen on. (default: ::)*
+
 - **-p, --port  PORT**\
   *The port to listen on. May not always work with authbind when attempting to bind to ports < 1024. (default: 8000)*
 
-- **-m, --max  BYTES**\
+- **-b, --max-bytes  BYTES**\
   *The maximum size of the request body in bytes. Requests larger than this will be rejected. (default: 1000000)*
 
 - **-t, --timeout  SECONDS**\
@@ -198,10 +201,10 @@ task logs-full   # logs including podman
 - **-k, --key  FILE**\
   *Path to the file containing the master key's argon2 hash and salt. (default: .masterkey)*
 
-- **--lang-map  FILE**\
+- **-m, --lang-map  FILE**\
   *Path to the file containing the language map. (default: langmap.toml)*
 
-- **--podman**  PATH\
+- **--podman-path**  PATH\
   *Path to the podman binary. (default: /usr/bin/podman)*
 
 - **--proxy  ADDR**\
