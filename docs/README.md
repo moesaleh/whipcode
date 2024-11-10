@@ -47,7 +47,7 @@ Implemented as a scalable, stateless microservice with no user management or aut
 | 28  | PHP            | -             |
 
 To add languages, see:
-- [images/build.sh](/images/build.sh)
+- [images/build.toml](/images/build.toml)
 - [images/extra_setup/](/images/extra_setup/)
 - [entry/](/entry/)
 - [langmap.toml](/langmap.toml)
