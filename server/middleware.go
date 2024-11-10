@@ -42,7 +42,7 @@ const (
  * @param params ScopedMiddleWareParams Parameters
  * @return http.HandlerFunc Handler
  */
-func ScopedMiddleWare(f http.HandlerFunc, params ScopedMiddleWareParams) http.HandlerFunc {
+func ScopedMiddleware(f http.HandlerFunc, params ScopedMiddlewareParams) http.HandlerFunc {
 	/**
 	 * @param w http.ResponseWriter Response writer
 	 * @param r *http.Request Request object
@@ -69,7 +69,7 @@ func ScopedMiddleWare(f http.HandlerFunc, params ScopedMiddleWareParams) http.Ha
  * @param params MiddleWareParams Parameters
  * @return http.Handler Handler
  */
-func MiddleWare(handler http.Handler, params MiddleWareParams) http.Handler {
+func Middleware(handler http.Handler, params MiddlewareParams) http.Handler {
 	/**
 	 * @param w http.ResponseWriter - Response writer
 	 * @param r *http.Request - Request object

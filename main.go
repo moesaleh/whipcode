@@ -142,7 +142,7 @@ options:
 
 	keyStore, keyAndSalt := control.InitializeKeystore(keyFile)
 
-	scopedParams := server.ScopedMiddleWareParams{
+	scopedParams := server.ScopedMiddlewareParams{
 		LangMap:      *config.LoadLangs(langMap),
 		EnableCache:  enableCache,
 		KeyAndSalt:   keyAndSalt,
@@ -155,7 +155,7 @@ options:
 		server.Send(w, http.StatusNotFound, []byte(`{"detail": "not found"}`))
 	})
 
-	http.HandleFunc("POST /run", server.ScopedMiddleWare(routes.Run, scopedParams))
+	http.HandleFunc("POST /run", server.ScopedMiddleware(routes.Run, scopedParams))
 	http.HandleFunc("/run", func(w http.ResponseWriter, _ *http.Request) {
 		server.Send(w, http.StatusMethodNotAllowed, []byte(`{"detail": "method not allowed"}`))
 	})
@@ -169,7 +169,7 @@ options:
 		rateLimiter.StartCleanup()
 	}
 
-	params := server.MiddleWareParams{
+	params := server.MiddlewareParams{
 		RateLimiter: rateLimiter,
 		Standalone:  standalone,
 		RlBurst:     rlBurst,
@@ -177,6 +177,6 @@ options:
 		Proxy:       proxy,
 	}
 
-	handler := server.MiddleWare(http.DefaultServeMux, params)
+	handler := server.Middleware(http.DefaultServeMux, params)
 	server.StartServer(port, handler, enableTLS, tlsDir, timeout)
 }

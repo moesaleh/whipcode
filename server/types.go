@@ -25,7 +25,7 @@ type contextKey string
 
 type LangMap map[string]map[string]string
 
-type ScopedMiddleWareParams struct {
+type ScopedMiddlewareParams struct {
 	LangMap      LangMap
 	EnableCache  bool
 	KeyAndSalt   []string
@@ -34,7 +34,7 @@ type ScopedMiddleWareParams struct {
 	Executor     podman.Executor
 }
 
-type MiddleWareParams struct {
+type MiddlewareParams struct {
 	RateLimiter *control.RateLimiter
 	Standalone  bool
 	RlBurst     int
