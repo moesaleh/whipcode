@@ -22,6 +22,12 @@ import (
 	"whipcode/server"
 )
 
+/**
+ * Ping endpoint for health checks.
+ *
+ * @param w http.ResponseWriter Response writer
+ * @param _ *http.Request Request object
+ */
 func Ping(w http.ResponseWriter, _ *http.Request) {
 	server.Send(w, http.StatusOK, []byte("pong"), "text/plain")
 }

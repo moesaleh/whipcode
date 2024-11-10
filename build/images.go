@@ -27,6 +27,13 @@ import (
 	"github.com/fatih/color"
 )
 
+/**
+ * Builds a Containerfile for a given language.
+ *
+ * @param string lang
+ * @param string setup
+ * @return string Containerfile content
+ */
 func ContainerFile(lang, setup string) string {
 	header := "FROM docker.io/alpine:latest"
 	prefix := "RUN apk update --no-cache && apk upgrade --no-cache && apk add --no-cache libc-dev musl-dev "
@@ -41,16 +48,17 @@ func ContainerFile(lang, setup string) string {
 	return fmt.Sprintf("%s\n%s%s && %s", header, prefix, setup, suffix)
 }
 
-func Cleanup(tempFile string) {
-	if err := os.Remove("TEMP_CONTAINERFILE"); err != nil {
-		color.Red("Error removing temporary file: %v", err)
-		os.Exit(1)
-	}
-}
-
+/**
+ * Builds images for all languages.
+ */
 func BuildImages() {
 	tempFile := "TEMP_CONTAINERFILE"
-	defer Cleanup(tempFile)
+	defer func() {
+		if err := os.Remove(tempFile); err != nil {
+			color.Red("Error removing temporary file: %v", err)
+			os.Exit(1)
+		}
+	}()
 
 	var builds Builds
 

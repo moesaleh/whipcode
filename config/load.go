@@ -23,6 +23,12 @@ import (
 	"github.com/charmbracelet/log"
 )
 
+/**
+ * Loads the configuration from the given path.
+ *
+ * @param path string Path to the configuration file
+ * @return *Config Configuration object
+ */
 func LoadConfig(path string) *Config {
 	var config Config
 	if _, err := toml.DecodeFile(path, &config); err != nil {
@@ -31,6 +37,12 @@ func LoadConfig(path string) *Config {
 	return &config
 }
 
+/**
+ * Loads the language map from the given path.
+ *
+ * @param path string Path to the language map file
+ * @return *server.LangMap Language map object
+ */
 func LoadLangs(path string) *server.LangMap {
 	var langs server.LangMap
 	if _, err := toml.DecodeFile(path, &langs); err != nil {

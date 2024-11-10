@@ -31,6 +31,13 @@ import (
 	"github.com/fatih/color"
 )
 
+/**
+ * Generate a form for the user to input the master
+ * key and port.
+ *
+ * @return string Master key
+ * @return string Port
+ */
 func TestForm() (string, string) {
 	var key string
 	var port string
@@ -76,6 +83,11 @@ func TestForm() (string, string) {
 	return strings.TrimSpace(key), strings.TrimSpace(port)
 }
 
+/**
+ * Run the self-test for the application. This
+ * will send a request for each language to the
+ * server with a test payload.
+ */
 func SelfTest() {
 	key, port := TestForm()
 

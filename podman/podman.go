@@ -33,17 +33,43 @@ import (
 	"github.com/karlseguin/ccache/v3"
 )
 
+/**
+ * Creates a new LRU cache for caching exec results
+ * and a new Executor instance.
+ *
+ * @param timeout int Timeout for execution
+ * @param podmanPath string Path to podman executable
+ * @return *Executor New Executor instance
+ */
 func NewExecutor(timeout int, podmanPath string) *Executor {
 	cache := ccache.New(ccache.Configure[map[string]interface{}]().MaxSize(100).ItemsToPrune(10))
 	return &Executor{execCache: cache, timeout: timeout, podmanPath: podmanPath}
 }
 
+/**
+ * Cleans up the temp directory. Called on SIGINT and
+ * SIGTERM.
+ */
 func Cleanup() {
 	if err := os.RemoveAll(filepath.Join(".", "run")); err != nil {
 		log.Error("Could not clean up temp dir", "Error", err)
 	}
 }
 
+/**
+ * Runs the given code in a podman container. The code is
+ * dumped into a temp file, which is then mounted into the
+ * container.
+ *
+ * @param code string Code to run
+ * @param entry string Entry point for the container
+ * @param cArgs string Args for the interpreter or compiler
+ * @param ext string File extension of the code
+ * @param timeout int Timeout for execution
+ * @param enableCache bool Enable caching of exec results
+ * @return int HTTP status code
+ * @return map[string]interface{} Response body
+ */
 func (ex *Executor) RunCode(code, entry, cArgs, ext string, timeout int, enableCache bool) (int, map[string]interface{}) {
 	argsSlice := strings.Fields(cArgs)
 	for i, arg := range argsSlice {

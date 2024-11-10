@@ -22,12 +22,26 @@ import (
 	"golang.org/x/time/rate"
 )
 
+/**
+ * Creates a new rate limiter.
+ *
+ * @return *RateLimiter Rate limiter object
+ */
 func NewRateLimiter() *RateLimiter {
 	return &RateLimiter{
 		clients: make(map[string]*Client),
 	}
 }
 
+/**
+ * Checks if a client should be rate limited or
+ * allowed to continue.
+ *
+ * @param ip string IP address of the client
+ * @param burst int Burst rate
+ * @param refill int Refill rate
+ * @return *rate.Limiter Rate limiter object
+ */
 func (rl *RateLimiter) LimitClient(ip string, burst, refill int) *rate.Limiter {
 	rl.mu.RLock()
 	user, exists := rl.clients[ip]
@@ -43,6 +57,10 @@ func (rl *RateLimiter) LimitClient(ip string, burst, refill int) *rate.Limiter {
 	return user.limiter
 }
 
+/**
+ * Starts a cleanup routine to remove old clients
+ * from the rate limiter. Run as a goroutine.
+ */
 func (rl *RateLimiter) StartCleanup() {
 	go func() {
 		for {
@@ -58,6 +76,16 @@ func (rl *RateLimiter) StartCleanup() {
 	}()
 }
 
+/**
+ * Checks if a client should be rate limited or
+ * allowed to continue. This is a wrapper around
+ * LimitClient and Allow.
+ *
+ * @param ip string IP address of the client
+ * @param burst int Burst rate
+ * @param refill int Refill rate
+ * @return bool True if the client should be rate limited
+ */
 func (rl *RateLimiter) CheckClient(ip string, burst, refill int) bool {
 	limiter := rl.LimitClient(ip, burst, refill)
 	return limiter.Allow()

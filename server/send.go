@@ -22,6 +22,15 @@ import (
 	"github.com/charmbracelet/log"
 )
 
+/**
+ * Send sends a response to the client.
+ *
+ * @param w http.ResponseWriter Response writer
+ * @param status int Status code to return
+ * @param message []byte Message to send
+ * @param contentType ...string Content type to
+ *   send, defaults to application/json
+ */
 func Send(w http.ResponseWriter, status int, message []byte, contentType ...string) {
 	cType := "application/json"
 	if len(contentType) > 0 {

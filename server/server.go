@@ -24,6 +24,16 @@ import (
 	"github.com/charmbracelet/log"
 )
 
+/**
+ * Starts the server with the given port, handler, and
+ * TLS settings.
+ *
+ * @param port int Port to use
+ * @param handler http.Handler Handler to use
+ * @param enableTLS bool Whether to enable TLS
+ * @param tlsDir string Directory for the TLS files
+ * @param timeout int Configured execution timeout
+ */
 func StartServer(port int, handler http.Handler, enableTLS bool, tlsDir string, timeout int) {
 	log.Info("Starting whipcode", "Port", port, "TLS", enableTLS)
 

@@ -25,6 +25,14 @@ import (
 	"golang.org/x/crypto/argon2"
 )
 
+/**
+ * Checks if the user key is valid. Runs argon2id on
+ * requests until a valid request is made, then caches
+ * the key.
+ *
+ * @param userKey string User key
+ * @param serverKey []string Server key
+ */
 func (ks *KeyStore) CheckKey(userKey string, serverKey []string) bool {
 	if cachedKey, ok := ks.cachedKey.Load().(string); ok && userKey == cachedKey {
 		return true
@@ -39,6 +47,13 @@ func (ks *KeyStore) CheckKey(userKey string, serverKey []string) bool {
 	return false
 }
 
+/**
+ * Initializes the key store.
+ *
+ * @param keyFile string Key file
+ * @return *KeyStore Key store
+ * @return []string Key and salt
+ */
 func InitializeKeystore(keyFile string) (*KeyStore, []string) {
 	file, err := os.ReadFile(keyFile)
 	if err != nil {

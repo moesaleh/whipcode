@@ -33,7 +33,20 @@ const (
 	ExecutorContextKey    contextKey = "executor"
 )
 
+/**
+ * Middleware for the /run endpoint that caps the
+ * request body size and passes various parameters
+ * to the handler.
+ *
+ * @param f http.HandlerFunc Handler
+ * @param params ScopedMiddleWareParams Parameters
+ * @return http.HandlerFunc Handler
+ */
 func ScopedMiddleWare(f http.HandlerFunc, params ScopedMiddleWareParams) http.HandlerFunc {
+	/**
+	 * @param w http.ResponseWriter Response writer
+	 * @param r *http.Request Request object
+     */
 	return func(w http.ResponseWriter, r *http.Request) {
 		r.Body = http.MaxBytesReader(w, r.Body, int64(params.MaxBytesSize))
 
@@ -48,7 +61,19 @@ func ScopedMiddleWare(f http.HandlerFunc, params ScopedMiddleWareParams) http.Ha
 	}
 }
 
+/**
+ * Global middleware for all requests that performs
+ * rate limiting and host checks.
+ *
+ * @param handler http.Handler Handler
+ * @param params MiddleWareParams Parameters
+ * @return http.Handler Handler
+ */
 func MiddleWare(handler http.Handler, params MiddleWareParams) http.Handler {
+	/**
+	 * @param w http.ResponseWriter - Response writer
+	 * @param r *http.Request - Request object
+	 */
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		host, _, _ := net.SplitHostPort(r.RemoteAddr)
 		details := fmt.Sprintf("%s %s %s", host, r.Method, r.URL)

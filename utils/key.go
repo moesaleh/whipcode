@@ -28,6 +28,12 @@ import (
 	"golang.org/x/crypto/argon2"
 )
 
+/**
+ * Generate a random string of a specified length.
+ *
+ * @param length int Length of the string
+ * @return string Random string
+ */
 func RandomString(length int) string {
 	bytes := make([]byte, length)
 	if _, err := rand.Read(bytes); err != nil {
@@ -37,6 +43,13 @@ func RandomString(length int) string {
 	return hex.EncodeToString(bytes)
 }
 
+/**
+ * Generate a form for the user to input the salt
+ * and key.
+ *
+ * @return string Salt
+ * @return string Key
+ */
 func KeyForm() (string, string) {
 	var salt string
 	var key string
@@ -65,6 +78,10 @@ func KeyForm() (string, string) {
 	return strings.TrimSpace(salt), strings.TrimSpace(key)
 }
 
+/**
+ * Generate a master key file with a salt and argon2
+ * hash of the key.
+ */
 func GenKey() {
 	salt, key := KeyForm()
 

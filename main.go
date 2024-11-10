@@ -38,6 +38,9 @@ import (
 
 const VERSION = "1.6.0"
 
+/**
+ * The entry point of the application.
+ */
 func main() {
 	logger := log.NewWithOptions(os.Stderr, log.Options{
 		ReportTimestamp: true,

@@ -30,6 +30,13 @@ import (
 	"whipcode/server"
 )
 
+/**
+ * Helper function for accepting a string or int value.
+ *
+ * @param l *StrInt StrInt object
+ * @param b []byte Byte array
+ * @return error Error object
+ */
 func (l *StrInt) UnmarshalJSON(b []byte) error {
 	var intValue int
 	if err := json.Unmarshal(b, &intValue); err == nil {
@@ -46,6 +53,14 @@ func (l *StrInt) UnmarshalJSON(b []byte) error {
 	return json.Unmarshal(b, &l.value)
 }
 
+/**
+ * Run endpoint for running code in a container. This is
+ * the main endpoint for the application.
+ * Calls podman.RunCode
+ *
+ * @param w http.ResponseWriter Response writer
+ * @param r *http.Request Request object
+ */
 func Run(w http.ResponseWriter, r *http.Request) {
 	masterKey := r.Header.Get("X-Master-Key")
 
