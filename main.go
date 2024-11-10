@@ -51,8 +51,8 @@ func main() {
 	fileConfig := config.LoadConfig("config.toml")
 
 	var version, enableTLS, enableCache, enablePing, standalone, genKey, selfTest, buildImages bool
+	var keyFile, proxy, podmanPath, tlsDir, langMap, addr string
 	var port, maxBytesSize, rlBurst, rlRefill, timeout int
-	var keyFile, proxy, podmanPath, tlsDir, langMap string
 
 	flag.Usage = func() {
 		fmt.Printf("usage: %s [options]\n", os.Args[0])
@@ -65,11 +65,12 @@ commands:
 options:
     -h, --help                print this help message
     -v, --version             print version information
+    -a, --addr       ADDR     address to listen on
     -p, --port       PORT     port to listen on
-    -m, --max-bytes  BYTES    max bytes to accept
+    -b, --max-bytes  BYTES    max bytes to accept
     -t, --timeout    SECONDS  timeout for execution
     -k, --key        FILE     master key file
-    --lang-map       FILE     language map file
+    -m, --lang-map   FILE     language map file
     --podman-path    PATH     path to podman
     --proxy          ADDR     reverse proxy address
     --cache                   enable execution cache
@@ -88,13 +89,16 @@ options:
 	flag.BoolVar(&version, "v", false, "")
 	flag.IntVar(&port, "port", fileConfig.Port, "")
 	flag.IntVar(&port, "p", fileConfig.Port, "")
+	flag.StringVar(&addr, "addr", fileConfig.Addr, "")
+	flag.StringVar(&addr, "a", fileConfig.Addr, "")
 	flag.IntVar(&maxBytesSize, "max-bytes", fileConfig.MaxBytes, "")
-	flag.IntVar(&maxBytesSize, "m", fileConfig.MaxBytes, "")
+	flag.IntVar(&maxBytesSize, "b", fileConfig.MaxBytes, "")
 	flag.IntVar(&timeout, "timeout", fileConfig.Timeout, "")
 	flag.IntVar(&timeout, "t", fileConfig.Timeout, "")
 	flag.StringVar(&keyFile, "key", fileConfig.Key, "")
 	flag.StringVar(&keyFile, "k", fileConfig.Key, "")
 	flag.StringVar(&langMap, "lang-map", fileConfig.LangMap, "")
+	flag.StringVar(&langMap, "m", fileConfig.LangMap, "")
 	flag.StringVar(&podmanPath, "podman-path", fileConfig.PodmanPath, "")
 	flag.StringVar(&proxy, "proxy", fileConfig.Proxy, "")
 	flag.BoolVar(&enableCache, "cache", fileConfig.Cache, "")
@@ -178,5 +182,5 @@ options:
 	}
 
 	handler := server.Middleware(http.DefaultServeMux, params)
-	server.StartServer(port, handler, enableTLS, tlsDir, timeout)
+	server.StartServer(port, addr, handler, enableTLS, tlsDir, timeout)
 }

@@ -6,6 +6,9 @@
 # when attempting to bind to ports < 1024.
 port = 8000
 
+# The address to listen on.
+addr = ""
+
 # The maximum size of the request body in bytes. Requests
 # larger than this will be rejected.
 maxBytes = 1000000

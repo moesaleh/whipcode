@@ -29,17 +29,18 @@ import (
  * TLS settings.
  *
  * @param port int Port to use
+ * @param addr string Address to use
  * @param handler http.Handler Handler to use
  * @param enableTLS bool Whether to enable TLS
  * @param tlsDir string Directory for the TLS files
  * @param timeout int Configured execution timeout
  */
-func StartServer(port int, handler http.Handler, enableTLS bool, tlsDir string, timeout int) {
-	log.Info("Starting whipcode", "Port", port, "TLS", enableTLS)
+func StartServer(port int, addr string, handler http.Handler, enableTLS bool, tlsDir string, timeout int) {
+	listen := fmt.Sprintf("%s:%d", addr, port)
+	log.Info("Starting whipcode", "Listen", listen, "TLS", enableTLS)
 
-	addr := fmt.Sprintf(":%d", port)
 	srv := &http.Server{
-		Addr:         addr,
+		Addr:         listen,
 		Handler:      handler,
 		ReadTimeout:  20 * time.Second,
 		WriteTimeout: (time.Duration(timeout) + 10) * time.Second,

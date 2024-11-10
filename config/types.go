@@ -18,6 +18,7 @@ package config
 
 type Config struct {
 	Port       int
+	Addr       string
 	MaxBytes   int
 	Proxy      string
 	TLS        bool
