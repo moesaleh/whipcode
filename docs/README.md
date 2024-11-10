@@ -295,6 +295,7 @@ External libraries used:
 - [karlseguin/ccache](https://github.com/karlseguin/ccache)
 - [charmbracelet/log](https://github.com/charmbracelet/log)
 - [charmbracelet/huh](https://github.com/charmbracelet/huh)
+- [fatih/color](https://github.com/fatih/color)
 
 ## License
 This project is licensed under the [Apache License, Version 2.0](/LICENSE).
