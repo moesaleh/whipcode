@@ -187,7 +187,7 @@ task logs-full   # logs including podman
 > The default values are not hardcoded, but specified in the [configuration file](/config.default.toml).
 
 - **-a, --addr ADDR**\
-  *The address to listen on. (default: ::)*
+  *The address to listen on. (default: none [listen on all interfaces])*
 
 - **-p, --port  PORT**\
   *The port to listen on. May not always work with authbind when attempting to bind to ports < 1024. (default: 8000)*
