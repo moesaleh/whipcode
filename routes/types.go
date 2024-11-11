@@ -16,6 +16,14 @@
 
 package routes
 
+/**
+ * Struct for decoding requests to the /run endpoint.
+ *
+ * @field Code string Code to run
+ * @field LanguageID StrInt ID of the language
+ * @field Args string Compiler/interpreter arguments
+ * @field Timeout StrInt Execution timeout
+ */
 type User struct {
 	Code       string `json:"code"`
 	LanguageID StrInt `json:"language_id"`
@@ -23,6 +31,11 @@ type User struct {
 	Timeout    StrInt `json:"timeout"`
 }
 
+/**
+ * Struct for string + integer values.
+ *
+ * @field value string Value
+ */
 type StrInt struct {
 	value string
 }

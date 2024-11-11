@@ -25,6 +25,17 @@ type contextKey string
 
 type LangMap map[string]map[string]string
 
+/**
+ * Struct that's used to pass options to the /run
+ * endpoint handler.
+ *
+ * @field LangMap LangMap Language map
+ * @field EnableCache bool Enable cache
+ * @field KeyAndSalt []string Key and salt
+ * @field MaxBytesSize int Maximum bytes size
+ * @field KeyStore *control.KeyStore Cached Key store
+ * @field Executor podman.Executor Podman executor
+ */
 type ScopedMiddlewareParams struct {
 	LangMap      LangMap
 	EnableCache  bool
@@ -34,6 +45,16 @@ type ScopedMiddlewareParams struct {
 	Executor     podman.Executor
 }
 
+/**
+ * Struct that's used to pass options to the global
+ * middleware
+ *
+ * @field RateLimiter *control.RateLimiter Rate limiter
+ * @field Standalone bool Standalone mode
+ * @field RlBurst int Rate limiter burst
+ * @field RlRefill int Rate limiter refill
+ * @field Proxy string Reverse proxy address
+ */
 type MiddlewareParams struct {
 	RateLimiter *control.RateLimiter
 	Standalone  bool

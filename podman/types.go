@@ -20,6 +20,14 @@ import (
 	"github.com/karlseguin/ccache/v3"
 )
 
+/**
+ * Struct for defining an executor.
+ *
+ * @field timeout int Timeout for the executor
+ * @field podmanPath string Path to the podman executable
+ * @field execCache *ccache.Cache[map[string]interface{}]
+ *   Cache for the executor
+ */
 type Executor struct {
 	timeout    int
 	podmanPath string

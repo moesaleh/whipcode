@@ -16,6 +16,11 @@
 
 package utils
 
+/**
+ * Struct that holds test code for each language.
+ *
+ * @field Test string Test code
+ */
 type Test struct {
 	Test string `toml:"test"`
 }

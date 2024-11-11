@@ -16,6 +16,25 @@
 
 package config
 
+/**
+ * Struct for defining configuration options.
+ *
+ * @field Port int Port to listen on
+ * @field Addr string Address to listen on
+ * @field MaxBytes int Max bytes to accept
+ * @field Proxy string Reverse proxy address
+ * @field TLS bool Enable tls
+ * @field TLSDir string Directory with cert and key
+ * @field Ping bool Enable /ping endpoint
+ * @field LangMap string Path to the language map
+ * @field PodmanPath string Path to podman
+ * @field Timeout int Timeout for executions
+ * @field Key string Master key file
+ * @field Cache bool Enable execution cache
+ * @field Standalone bool Enable rate limiting
+ * @field Burst int Burst for the rate limiter
+ * @field Refill int Refill for the rate limiter
+ */
 type Config struct {
 	Port       int
 	Addr       string

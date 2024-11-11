@@ -16,6 +16,11 @@
 
 package build
 
+/**
+ * Struct that holds the base setup for each language.
+ *
+ * @field Setup string Setup code
+ */
 type Build struct {
 	Setup string `toml:"setup"`
 }
