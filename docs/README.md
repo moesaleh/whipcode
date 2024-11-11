@@ -68,6 +68,7 @@ To add languages, see:
   - [Response](#response)
   - [Example request](#example-request)
   - [Example response](#example-response)
+- [Tasks](#tasks)
 - [Contributing](#contributing)
 - [Credits](#credits)
 - [License](#license)
@@ -133,22 +134,17 @@ sudo semodule -i selinux/whipcode.cil selinux/base_container.cil
 ```
 
 ### Building
-Use `task <action>` to run predefined build actions:
+Use `task <command>` to run predefined build actions:
 
-- **all**\
-  *Build everything*
+| Command          | Action                                        |
+| ---------------- | --------------------------------------------- |
+| `all`            | Build everything.                             |
+| `build`          | Build only whipcode.                          |
+| `build-images`   | Build only the container images.              |
+| `rebuild-images` | Clean rebuild images.                         |
+| `update`         | Update (git pull), build whipcode and images. |
 
-- **build**\
-  *Build only whipcode*
-
-- **build-images**\
-  *Build only the container images*
-
-- **rebuild-images**\
-  *Clean rebuild images*
-
-- **update**\
-  *Update (git pull), build whipcode and images*
+See the [Tasks](#tasks) section for more non-build actions.
 
 ## Starting the service
 
@@ -186,51 +182,51 @@ task logs-full   # logs including podman
 > [!NOTE]
 > The default values are not hardcoded, but specified in the [configuration file](/config.default.toml).
 
-- **-a, --addr ADDR**\
-  *The address to listen on. (default: none [listen on all interfaces])*
+- `-a` `--addr` `ADDR`\
+  The address to listen on. (default: none [listen on all interfaces])
 
-- **-p, --port  PORT**\
-  *The port to listen on. May not always work with authbind when attempting to bind to ports < 1024. (default: 8000)*
+- `-p` `--port` `PORT`\
+  The port to listen on. May not always work with authbind when attempting to bind to ports < 1024. (default: 8000)
 
-- **-b, --max-bytes  BYTES**\
-  *The maximum size of the request body in bytes. Requests larger than this will be rejected. (default: 1000000)*
+- `-b` `--max-bytes` `BYTES`\
+  The maximum size of the request body in bytes. Requests larger than this will be rejected. (default: 1000000)
 
-- **-t, --timeout  SECONDS**\
-  *The maximum time allowed for code execution. (default: 10)*
+- `-t` `--timeout` `SECONDS`\
+  The maximum time allowed for code execution. (default: 10)
 
-- **-k, --key  FILE**\
-  *Path to the file containing the master key's argon2 hash and salt. (default: .masterkey)*
+- `-k` `--key` `FILE`\
+  Path to the file containing the master key's argon2 hash and salt. (default: .masterkey)
 
-- **-m, --lang-map  FILE**\
-  *Path to the file containing the language map. (default: langmap.toml)*
+- `-m` `--lang-map` `FILE`\
+  Path to the file containing the language map. (default: langmap.toml)
 
-- **--podman-path**  PATH\
-  *Path to the podman binary. (default: /usr/bin/podman)*
+- `--podman-path` `PATH`\
+  Path to the podman binary. (default: /usr/bin/podman)
 
-- **--proxy  ADDR**\
-  *The address of the reverse proxy or API gateway in front of whipcode. Requests not originating from this address will be rejected. (default: none)*
+- `--proxy` `ADDR`\
+  The address of the reverse proxy or API gateway in front of whipcode. Requests not originating from this address will be rejected. (default: none)
 
-- **--cache**\
-  *Enables an LRU cache for code executions. This will speed up responses for repeated requests. (default: false)*\
-  ***Note:** The cache is not persistent and will be lost on restart. While this feature is intended to reduce server load and latency, in some situations it may end up worsening it. Memory usage will also increase.*
+- `--cache`\
+  Enables an LRU cache for code executions. This will speed up responses for repeated requests. (default: false)\
+  **Note:** The cache is not persistent and will be lost on restart. While this feature is intended to reduce server load and latency, in some situations it may end up worsening it. Memory usage will also increase.
 
-- **--tls**\
-  *Enables TLS.*
+- `--tls`\
+  Enables TLS.
 
-- **--tls-dir  DIR**\
-  *The directory containing cert.pem and key.pem. (default: tls)*
+- `--tls-dir` `DIR`\
+  The directory containing cert.pem and key.pem. (default: tls)
 
-- **--ping**\
-  *Enables the /ping endpoint. Replies with "pong".*
+- `--ping`\
+  Enables the /ping endpoint. Replies with "pong".
 
-- **--standalone**\
-  *Enables per IP rate limiting, without the need for a reverse proxy or API gateway. This is NOT RECOMMENDED in production. (default: false)*
+- `--standalone`\
+  Enables per IP rate limiting, without the need for a reverse proxy or API gateway. This is NOT RECOMMENDED in production. (default: false)
 
-- **--burst  COUNT**     (Requires --standalone)\
-  *The number of requests allowed in a burst. (default: 3)*
+- `--burst` `COUNT`     (Requires --standalone)\
+  The number of requests allowed in a burst. (default: 3)
 
-- **--refill  SECONDS**  (Requires --standalone)\
-  *The number of seconds for each request to refill in the burst bucket. (default: 1)*
+- `--refill` `SECONDS`  (Requires --standalone)\
+  The number of seconds for each request to refill in the burst bucket. (default: 1)
 
 ## API reference
 
@@ -241,15 +237,15 @@ task logs-full   # logs including podman
 - `X-Master-Key: $MASTER_KEY`
 
 ### Body
-| Name          | Required | Type                 | Description                                                                                    |
-| ------------- | -------- | -------------------- | ---------------------------------------------------------------------------------------------- |
-| `code`        | yes      | `string`             | The source code, base64 encoded.                                                               |
-| `language_id` | yes      | `integer` `string`   | Language ID of the submitted code.                                                             |
-| `args`        | no       | `string`             | Compiler/interpreter args separated by spaces.                                                 |
+| Name          | Required | Type                 | Description                                    |
+| ------------- | -------- | -------------------- | ---------------------------------------------- |
+| `code`        | yes      | `string`             | The source code, base64 encoded.               |
+| `language_id` | yes      | `integer` `string`   | Language ID of the submitted code.             |
+| `args`        | no       | `string`             | Compiler/interpreter args separated by spaces. |
 | `timeout`     | no       | `integer` `string`   | Timeout in seconds for the code to run. Capped at the timeout set in whipcode's configuration. |
 
 ### Response
-`200`
+`200 OK`
 | Name            | Type     | Description                                                     |
 | --------------- | -------- | --------------------------------------------------------------- |
 | `stdout`        | `string` | All data captured from stdout.                                  |
@@ -264,7 +260,7 @@ task logs-full   # logs including podman
 
 ### Example request
 ```bash
-lang=2
+lang=2  # javascript
 code='console.log("Hello world!");'
 timeout=5
 
@@ -288,6 +284,26 @@ curl -s -X POST $ENDPOINT \
   "timeout": false
 }
 ```
+
+## Tasks
+The provided [Taskfile](/Taskfile.yml) has the following tasks defined:
+| Task                | Action                                                       |
+| ------------------- | ------------------------------------------------------------ |
+| `run`               | Run whipcode with the provided with CLI arguments.           |
+| `build`             | Build only whipcode.                                         |
+| `build-images`      | Build only container images.                                 |
+| `rebuild-images`    | Remove existing images and rebuild them.                     |
+| `clean`             | Remove all files in the build directory.                     |
+| `all`               | Clean and build the project + images.                        |
+| `update`            | Pull the latest changes and run the `all` task.              |
+| `config-init`       | Copy the default configuration and open it in an editor.     |
+| `key`               | Generate a key using `--gen-key`                             |
+| `test`              | Run a self-test using `--self-test`                          |
+| `systemd-install`   | Install and enable the systemd service for the current user. |
+| `status`            | Display the status of the systemd service.                   |
+| `logs`              | Show the recent logs for the systemd service using its PID.  |
+| `logs-full`         | Show the full logs for the systemd service.                  |
+
 
 ## Contributing
 Please read the [Contributing Guidelines](/.github/CONTRIBUTING.md) and [Code of Conduct](/.github/CODE_OF_CONDUCT.md) before opening a pull request.
