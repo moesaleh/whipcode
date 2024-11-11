@@ -68,7 +68,7 @@ options:
     -a, --addr       ADDR     address to listen on
     -p, --port       PORT     port to listen on
     -b, --max-bytes  BYTES    max bytes to accept
-    -t, --timeout    SECONDS  timeout for execution
+    -t, --timeout    SECONDS  timeout for executions
     -k, --key        FILE     master key file
     -m, --lang-map   FILE     language map file
     --podman-path    PATH     path to podman
