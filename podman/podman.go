@@ -84,21 +84,21 @@ func Sanitize(String string) string {
  * @return int HTTP status code
  * @return map[string]interface{} Response body
  */
-func (ex *Executor) RunCode(code, entry, cArgs, stdin, ext string, timeout int, enableCache bool) (int, map[string]interface{}) {
-	cArgs, stdin = Sanitize(cArgs), Sanitize(stdin)
+func (ex *Executor) RunCode(opt ExecutionOptions) (int, map[string]interface{}) {
+	cArgs, stdin := Sanitize(opt.Args), Sanitize(opt.Stdin)
 
-	if enableCache {
-		if item := ex.execCache.Get(cArgs + entry + code); item != nil {
+	if opt.EnableCache {
+		if item := ex.execCache.Get(cArgs + opt.Entry + opt.Code); item != nil {
 			go item.Extend(time.Hour * 24)
 			return http.StatusOK, item.Value()
 		}
 	}
 
 	boxID := strconv.Itoa(rand.Intn(9000000) + 1000000)
-	srcFileName := fmt.Sprintf("run%s.%s", boxID, ext)
+	srcFileName := fmt.Sprintf("run%s.%s", boxID, opt.Ext)
 	srcFilePath := filepath.Join(".", "run", srcFileName)
 
-	if err := os.WriteFile(srcFilePath, []byte(code), 0644); err != nil {
+	if err := os.WriteFile(srcFilePath, []byte(opt.Code), 0644); err != nil {
 		log.Error("Could not write to temp file", "Error", err)
 		return http.StatusInternalServerError, map[string]interface{}{
 			"detail": "internal server error",
@@ -106,8 +106,8 @@ func (ex *Executor) RunCode(code, entry, cArgs, stdin, ext string, timeout int, 
 	}
 	defer os.Remove(srcFilePath)
 
-	thisTimeout := timeout
-	if timeout == 0 || timeout > ex.timeout {
+	thisTimeout := opt.Timeout
+	if opt.Timeout == 0 || opt.Timeout > ex.timeout {
 		thisTimeout = ex.timeout
 	}
 
@@ -135,10 +135,19 @@ func (ex *Executor) RunCode(code, entry, cArgs, stdin, ext string, timeout int, 
 		"--security-opt", "mask=/run:/sys:/var",
 		"--security-opt", "label=type:whipcode.process",
 		"--security-opt", "proc-opts=hidepid=2,subset=pid",
-		"--volume", fmt.Sprintf("./entry/%s.sh:/entry.sh:z,ro", entry),
-		"--volume", fmt.Sprintf("./run/%s:/source.%s:Z,ro", srcFileName, ext),
-		"whipcode-" + entry, "sh", "-c", fmt.Sprintf("echo stdout-start && echo stderr-start >&2 && echo %s | sh entry.sh %s", stdin, cArgs),
+		"--unsetenv", "container",
+		"--volume", fmt.Sprintf("./entry/%s.sh:/entry.sh:z,ro", opt.Entry),
+		"--volume", fmt.Sprintf("./run/%s:/source.%s:Z,ro", srcFileName, opt.Ext),
 	}
+	for k, v := range opt.Env {
+		args = append(args, "--env", k+"="+v)
+	}
+	args = append(
+		args,
+		"whipcode-"+opt.Entry,
+		"sh", "-c", fmt.Sprintf("echo stdout-start && echo stderr-start >&2 && echo %s | sh entry.sh %s", stdin, cArgs),
+	)
+
 	cmdExec := exec.CommandContext(ctx, ex.podmanPath, args...)
 	cmdExec.Stdout = &stdout
 	cmdExec.Stderr = &stderr
@@ -155,8 +164,8 @@ func (ex *Executor) RunCode(code, entry, cArgs, stdin, ext string, timeout int, 
 			"timeout":       true,
 		}
 
-		if enableCache {
-			go ex.execCache.Set(cArgs+entry+code, result, time.Hour*24)
+		if opt.EnableCache {
+			go ex.execCache.Set(cArgs+opt.Entry+opt.Code, result, time.Hour*24)
 		}
 
 		return http.StatusOK, result
@@ -178,8 +187,8 @@ func (ex *Executor) RunCode(code, entry, cArgs, stdin, ext string, timeout int, 
 		"timeout":       false,
 	}
 
-	if enableCache {
-		go ex.execCache.Set(cArgs+entry+code, result, time.Hour*24)
+	if opt.EnableCache {
+		go ex.execCache.Set(cArgs+opt.Entry+opt.Code, result, time.Hour*24)
 	}
 
 	return http.StatusOK, result

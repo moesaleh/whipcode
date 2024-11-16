@@ -33,3 +33,26 @@ type Executor struct {
 	podmanPath string
 	execCache  *ccache.Cache[map[string]interface{}]
 }
+
+/**
+ * Struct for defining execution options.
+ *
+ * @field Code string Code to run
+ * @field Entry string Entry point
+ * @field Args string Compiler/interpreter arguments
+ * @field Stdin string Standard input
+ * @field Ext string File extension
+ * @field Timeout int Execution timeout
+ * @field Env map[string]string Environment variables
+ * @field EnableCache bool Enable cache
+ */
+type ExecutionOptions struct {
+	Code        string
+	Entry       string
+	Args        string
+	Stdin       string
+	Ext         string
+	Timeout     int
+	Env         map[string]string
+	EnableCache bool
+}

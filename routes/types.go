@@ -25,11 +25,12 @@ package routes
  * @field Timeout StrInt Execution timeout
  */
 type User struct {
-	Code       string `json:"code"`
-	LanguageID StrInt `json:"language_id"`
-	Args       string `json:"args"`
-	Timeout    StrInt `json:"timeout"`
-	Stdin      string `json:"stdin"`
+	Code       string            `json:"code"`
+	LanguageID StrInt            `json:"language_id"`
+	Args       string            `json:"args"`
+	Timeout    StrInt            `json:"timeout"`
+	Stdin      string            `json:"stdin"`
+	Env        map[string]string `json:"env"`
 }
 
 /**
