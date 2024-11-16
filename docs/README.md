@@ -243,8 +243,8 @@ task logs-full   # logs including podman
 | `language_id` | yes      | `integer` `string`   | Language ID of the submitted code.             |
 | `args`        | no       | `string`             | Compiler/interpreter args separated by spaces. |
 | `timeout`     | no       | `integer` `string`   | Timeout in seconds for the code to run. Capped at the timeout set in whipcode's configuration. |
-| `stdin`       | no       | `string`             | Standard input.                                |
-| `env`         | no       | `object`             | Environment variables.                         |
+| `stdin`       | no       | `string`             | Standard input passed to the execution.        |
+| `env`         | no       | `object`             | Key-value pairs to add to the environment.     |
 
 ### Response
 `200 OK`
