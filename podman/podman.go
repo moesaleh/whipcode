@@ -57,6 +57,20 @@ func Cleanup() {
 }
 
 /**
+ * Sanitizes the given string from shell injection.
+ *
+ * @param String string Code to sanitize
+ * @return string Sanitized code
+ */
+func Sanitize(String string) string {
+	slices := strings.Fields(String)
+	for i, slice := range slices {
+		slices[i] = "'" + strings.ReplaceAll(slice, "'", "'\\''") + "'"
+	}
+	return strings.Join(slices, " ")
+}
+
+/**
  * Runs the given code in a podman container. The code is
  * dumped into a temp file, which is then mounted into the
  * container.
@@ -70,12 +84,8 @@ func Cleanup() {
  * @return int HTTP status code
  * @return map[string]interface{} Response body
  */
-func (ex *Executor) RunCode(code, entry, cArgs, ext string, timeout int, enableCache bool) (int, map[string]interface{}) {
-	argsSlice := strings.Fields(cArgs)
-	for i, arg := range argsSlice {
-		argsSlice[i] = "'" + strings.ReplaceAll(arg, "'", "'\\''") + "'"
-	}
-	cArgs = strings.Join(argsSlice, " ")
+func (ex *Executor) RunCode(code, entry, cArgs, stdin, ext string, timeout int, enableCache bool) (int, map[string]interface{}) {
+	cArgs, stdin = Sanitize(cArgs), Sanitize(stdin)
 
 	if enableCache {
 		if item := ex.execCache.Get(cArgs + entry + code); item != nil {
@@ -127,7 +137,7 @@ func (ex *Executor) RunCode(code, entry, cArgs, ext string, timeout int, enableC
 		"--security-opt", "proc-opts=hidepid=2,subset=pid",
 		"--volume", fmt.Sprintf("./entry/%s.sh:/entry.sh:z,ro", entry),
 		"--volume", fmt.Sprintf("./run/%s:/source.%s:Z,ro", srcFileName, ext),
-		"whipcode-" + entry, "sh", "-c", "echo stdout-start && echo stderr-start >&2 && sh ./entry.sh " + cArgs,
+		"whipcode-" + entry, "sh", "-c", fmt.Sprintf("echo stdout-start && echo stderr-start >&2 && echo %s | sh entry.sh %s", stdin, cArgs),
 	}
 	cmdExec := exec.CommandContext(ctx, ex.podmanPath, args...)
 	cmdExec.Stdout = &stdout

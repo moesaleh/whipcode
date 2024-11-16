@@ -114,7 +114,7 @@ func Run(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ex, _ := r.Context().Value(server.ExecutorContextKey).(podman.Executor)
-	status, result := ex.RunCode(string(codeBytes), langConfig["entry"], user.Args, langConfig["ext"], timeout, r.Context().Value(server.EnableCacheContextKey).(bool))
+	status, result := ex.RunCode(string(codeBytes), langConfig["entry"], user.Args, user.Stdin, langConfig["ext"], timeout, r.Context().Value(server.EnableCacheContextKey).(bool))
 	resultBytes, _ := json.Marshal(result)
 
 	server.Send(w, status, resultBytes)

@@ -29,6 +29,7 @@ type User struct {
 	LanguageID StrInt `json:"language_id"`
 	Args       string `json:"args"`
 	Timeout    StrInt `json:"timeout"`
+	Stdin      string `json:"stdin"`
 }
 
 /**
