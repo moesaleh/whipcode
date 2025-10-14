@@ -7,9 +7,11 @@ REST API for executing untrusted code with Podman.
 
 Implemented as a scalable, stateless microservice with no user management or authentication.
 
-> Don't want to self host? Head over to [whipcode.app](https://whipcode.app) to access the live endpoint.
+> ~~Don't want to self host? Head over to [whipcode.app](https://whipcode.app) to access the live endpoint.~~ 
 >
-> Drop us an email at [hello@whipcode.app](mailto:hello@whipcode.app) if you'd like to get in touch.
+> ~~Drop us an email at [hello@whipcode.app](mailto:hello@whipcode.app) if you'd like to get in touch.~~
+>
+> The hosted instance has been discontinued
 
 <details>
   <summary>Click to see default languages</summary>
